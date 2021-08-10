@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CardapioFood</string>
+    <!--Menu Itens-->
+    <string name="gostei">Gostei</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="luz">Luz</string>
+
+    <!--Labels NavGrapg-->
+    <string name="receitas">Receitas</string>
+    <string name="receita">Receita</string>
+    <string name="pesquisa">Pesquisa</string>
+
+</resources>
