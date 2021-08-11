@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.gruppe.cardapiofood.FirstFragment"
+        android:name="com.gruppe.cardapiofood.ui.view.MenuCategoriaFragment"
         android:label="Receitas"
         tools:layout="@layout/fragment_first">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.gruppe.cardapiofood.SecondFragment"
+        android:name="com.gruppe.cardapiofood.ui.view.CategoriaFragment"
         android:label=""
         tools:layout="@layout/fragment_second">
 
