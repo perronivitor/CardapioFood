@@ -8,6 +8,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
+        android:id="@+id/imgCategory"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
@@ -23,6 +24,7 @@
         android:elevation="6dp"
         android:background="#99000000">
         <TextView
+            android:id="@+id/tvDescriptionCategory"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"

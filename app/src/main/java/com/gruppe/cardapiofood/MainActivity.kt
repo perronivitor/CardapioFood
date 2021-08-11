@@ -1,12 +1,16 @@
 package com.gruppe.cardapiofood
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -16,6 +20,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var menuItemSettings: MenuItem
     private lateinit var menuItemLight: MenuItem
     private lateinit var navController: NavController
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +43,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     /**
      * Função responsável por controlar a visibilidade dos menu itens
      */
@@ -48,12 +59,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             menuItemFavorite.isVisible = destination.id == R.id.FirstFragment
             menuItemSettings.isVisible = destination.id == R.id.FirstFragment
             menuItemLight.isVisible = destination.id == R.id.FirstFragment
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }

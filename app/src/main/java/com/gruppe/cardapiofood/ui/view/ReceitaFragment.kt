@@ -1,4 +1,4 @@
-package com.gruppe.cardapiofood.ui.viewmodel
+package com.gruppe.cardapiofood.ui.view
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.gruppe.cardapiofood.R
+import com.gruppe.cardapiofood.ui.viewmodel.ReceitaViewModel
 
 class ReceitaFragment : Fragment() {
 
