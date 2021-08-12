@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
 
     private lateinit var retrofit: Retrofit
-    private val BASE_URL = "www.themealdb.com/api/json/v1/1/"
+    private const val BASE_URL="https://www.themealdb.com/api/json/v1/1/"
 
     //Função de construção Retrofit
     private fun getRetrofitInstance() :Retrofit{

@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.viewmodel.ReceitaViewModel
 
-class ReceitaFragment : Fragment() {
+class IngredientFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ReceitaFragment()
+        fun newInstance() = IngredientFragment()
     }
 
     private lateinit var viewModel: ReceitaViewModel
@@ -21,7 +21,7 @@ class ReceitaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.receita_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_ingredients, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

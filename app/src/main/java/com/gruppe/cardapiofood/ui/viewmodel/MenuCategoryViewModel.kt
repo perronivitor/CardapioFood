@@ -12,6 +12,8 @@ class MenuCategoryViewModel : ViewModel(){
 
     var mCategoryItemList = MutableLiveData<MutableList<Categories?>>()
 
+    var mCategoryCurrent = MutableLiveData<Categories>()
+
     fun getMenuCategoryList(){
         repository.getMenuCatedoryList(object : GetMenuCategoryList{
             override fun onSuccess(categoryItens: MutableList<Categories?>) {
@@ -19,11 +21,11 @@ class MenuCategoryViewModel : ViewModel(){
             }
 
             override fun onErrorCode(errorCode: Int, message: String) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onFailure(message: String) {
-                TODO("Not yet implemented")
+
             }
         })
     }

@@ -17,7 +17,7 @@ class CategoriaFragment : Fragment() {
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
-        viewFragment = inflater.inflate(R.layout.fragment_second, container, false)
+        viewFragment = inflater.inflate(R.layout.fragment_meals, container, false)
         return viewFragment
     }
 

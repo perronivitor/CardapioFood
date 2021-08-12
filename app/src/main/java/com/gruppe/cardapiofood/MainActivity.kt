@@ -1,16 +1,13 @@
 package com.gruppe.cardapiofood
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -20,6 +17,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var menuItemSettings: MenuItem
     private lateinit var menuItemLight: MenuItem
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +26,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setSupportActionBar(toolbar)
 
         navController = findNavController(R.id.nav_host_fragment)
+
+        //Prepara o actionbar
+        appBarConfiguration = AppBarConfiguration
+            .Builder(R.id.MenuCategoryFragment).build()
 
         setupActionBarWithNavController(navController)
 
@@ -43,22 +45,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     /**
      * Função responsável por controlar a visibilidade dos menu itens
      */
     private fun prepareMenuItens() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             //Controla Visibilidade dos Menu Itens
-            menuItemSearch.isVisible = destination.id == R.id.SecondFragment
-            menuItemFavorite.isVisible = destination.id == R.id.FirstFragment
-            menuItemSettings.isVisible = destination.id == R.id.FirstFragment
-            menuItemLight.isVisible = destination.id == R.id.FirstFragment
+            menuItemSearch.isVisible = destination.id == R.id.mealsFragment
+            menuItemFavorite.isVisible = destination.id == R.id.MenuCategoryFragment
+            menuItemSettings.isVisible = destination.id == R.id.MenuCategoryFragment
+            menuItemLight.isVisible = destination.id == R.id.MenuCategoryFragment
         }
     }
+
 }

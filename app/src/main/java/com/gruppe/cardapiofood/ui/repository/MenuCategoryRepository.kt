@@ -4,6 +4,7 @@ import android.util.Log
 import com.gruppe.cardapiofood.retrofit.RetrofitClient
 import com.gruppe.cardapiofood.ui.listener.GetMenuCategoryList
 import com.gruppe.cardapiofood.ui.model.Categories
+import com.gruppe.cardapiofood.ui.model.RequestListCategories
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,19 +15,23 @@ class MenuCategoryRepository {
     fun getMenuCatedoryList(listener: GetMenuCategoryList) {
 
         RetrofitClient.service.getMenuCategoryList()
-            .enqueue(object : Callback<MutableList<Categories?>?> {
+            .enqueue(object : Callback<RequestListCategories?> {
                 override fun onResponse(
-                    call: Call<MutableList<Categories?>?>,
-                    res: Response<MutableList<Categories?>?>
+                    call: Call<RequestListCategories?>,
+                    res: Response<RequestListCategories?>
                 ) {
                     try {
                         when {
                             res.isSuccessful -> {
                                 res.body()?.let { list ->
-                                  listener.onSuccess(list)
+                                    Log.i("MenuCategoryRepository",list.toString())
+                                    val categories = mutableListOf<Categories?>()
+                                    categories.addAll(list.categories)
+                                    listener.onSuccess(categories)
                                 }
                             }
                             else -> {
+                                Log.i("MenuCategoryRepository","${res.code()}, ${res.message()}")
                                 listener.onErrorCode(res.code(), res.message())
                             }
                         }
@@ -36,7 +41,8 @@ class MenuCategoryRepository {
                     }
                 }
 
-                override fun onFailure(call: Call<MutableList<Categories?>?>, t: Throwable) {
+                override fun onFailure(call: Call<RequestListCategories?>, t: Throwable) {
+                    Log.e("MenuCategoryRepository", t.message.toString())
                     listener.onFailure(t.message.toString())
                 }
             })
