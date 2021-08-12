@@ -23,5 +23,17 @@
         <argument
             android:name="meals"
             app:argType="com.gruppe.cardapiofood.ui.model.Categories" />
+        <action
+            android:id="@+id/action_mealsFragment_to_ingredientFragment"
+            app:destination="@id/ingredientFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ingredientFragment"
+        android:name="com.gruppe.cardapiofood.ui.view.IngredientFragment"
+        android:label="fragment_ingredients"
+        tools:layout="@layout/fragment_ingredients" >
+        <argument
+            android:name="ingredients"
+            app:argType="com.gruppe.cardapiofood.ui.model.Meals" />
     </fragment>
 </navigation>

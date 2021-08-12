@@ -1,6 +1,5 @@
 package com.gruppe.cardapiofood.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gruppe.cardapiofood.ui.listener.GetMeals
@@ -12,6 +11,8 @@ class MealsViewModel : ViewModel() {
     private val repository = MealsRepository()
 
     var mMealsList = MutableLiveData<MutableList<Meals>>()
+
+    var mMealCurrent = MutableLiveData<Meals>()
 
     fun getMeals(meal: String){
         repository.getMeals(meal,object : GetMeals{

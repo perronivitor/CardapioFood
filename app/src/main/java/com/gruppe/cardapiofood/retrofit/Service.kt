@@ -1,9 +1,6 @@
 package com.gruppe.cardapiofood.retrofit
 
-import com.gruppe.cardapiofood.ui.model.Categories
-import com.gruppe.cardapiofood.ui.model.Meals
-import com.gruppe.cardapiofood.ui.model.RequestListCategories
-import com.gruppe.cardapiofood.ui.model.RequestMeals
+import com.gruppe.cardapiofood.ui.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.http.GET
@@ -17,4 +14,8 @@ interface Service {
 
     @GET("filter.php")
     fun getMeals(@Query ("c") meals: String ) : Call<RequestMeals>?
+
+    @GET("search.php")
+    fun getIngredients(@Query ("s") meals: String ) : Call<RequestIngredients>?
+
 }

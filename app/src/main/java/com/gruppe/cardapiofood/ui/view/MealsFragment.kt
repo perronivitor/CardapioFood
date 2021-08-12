@@ -1,19 +1,19 @@
 package com.gruppe.cardapiofood.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.adapter.MealsAdapter
-import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.model.Categories
 import com.gruppe.cardapiofood.ui.model.Meals
 import com.gruppe.cardapiofood.ui.viewmodel.MealsViewModel
@@ -30,9 +30,7 @@ class MealsFragment : Fragment() {
     private lateinit var adapter: MealsAdapter
     private var isInstanced: Boolean = false
 
-    companion object {
-        fun newInstance() = MealsFragment()
-    }
+    companion object {fun newInstance() = MealsFragment()}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,13 +60,19 @@ class MealsFragment : Fragment() {
             if (it == null) { return@observe }
             if (!isInstanced) prepareRecyclerView(it) else adapter.setData(it)
         })
+        viewModel.mMealCurrent.observe(viewLifecycleOwner,{meals->
+            if (meals == null) { return@observe }
+            val directions =  MealsFragmentDirections.actionMealsFragmentToIngredientFragment(meals)
+            findNavController().navigate(directions,AnimNextFragment.animOptions)
+            viewModel.mMealCurrent.postValue(null)
+        })
     }
 
     /**
      * Prepara a Recycler View
      */
     private fun prepareRecyclerView(itens: MutableList<Meals>) {
-        adapter = MealsAdapter()
+        adapter = MealsAdapter(viewModel)
         adapter.dataSet.addAll(itens)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

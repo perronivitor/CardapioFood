@@ -8,9 +8,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.model.Meals
+import com.gruppe.cardapiofood.ui.viewmodel.MealsViewModel
 import com.squareup.picasso.Picasso
 
-class MealsAdapter() : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
+class MealsAdapter(private val viewModel : MealsViewModel)
+    : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
 
     var dataSet = mutableListOf<Meals>()
 
@@ -29,13 +31,12 @@ class MealsAdapter() : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         //Utilizei Elvis Operator para não mostrar valores nulos
-
         Picasso.get().load(dataSet[position]?.img ?: "").into(holder.image);
         holder.description.text = dataSet[position]?.strMeal ?: ""
 
         //Capturo evento de click
         holder.itemView.setOnClickListener {
-
+            viewModel.mMealCurrent.postValue(dataSet[position])
         }
     }
 

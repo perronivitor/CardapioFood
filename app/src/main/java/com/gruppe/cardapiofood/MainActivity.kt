@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         appBarConfiguration = AppBarConfiguration
             .Builder(R.id.MenuCategoryFragment).build()
 
-        setupActionBarWithNavController(navController)
+        setupActionBarWithNavController(navController,appBarConfiguration)
 
     }
 
@@ -43,6 +43,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         menuItemSettings = menu.findItem(R.id.menuItemSettings)
         prepareMenuItens()
         return true
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     /**
@@ -57,5 +61,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             menuItemLight.isVisible = destination.id == R.id.MenuCategoryFragment
         }
     }
+
+
 
 }

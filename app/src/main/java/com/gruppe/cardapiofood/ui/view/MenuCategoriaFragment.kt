@@ -16,9 +16,7 @@ import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.model.Categories
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+
 class MenuCategoriaFragment : Fragment() {
 
     private val viewModel: MenuCategoryViewModel by viewModels()
@@ -63,6 +61,8 @@ class MenuCategoriaFragment : Fragment() {
                         .actionMenuCategoryFragmentToMealsFragment(category)
                 findNavController()
                     .navigate(directions,AnimNextFragment.animOptions)
+
+                viewModel.mCategoryCurrent.postValue(null)
             }
         })
     }
@@ -80,6 +80,4 @@ class MenuCategoriaFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
     }
-
-
 }
