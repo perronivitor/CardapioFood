@@ -1,32 +1,31 @@
 package com.gruppe.cardapiofood.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.gruppe.cardapiofood.ui.listener.GetMenuCategoryList
-import com.gruppe.cardapiofood.ui.model.Categories
+import com.gruppe.cardapiofood.ui.model.CategoryData
 import com.gruppe.cardapiofood.ui.repository.MenuCategoryRepository
 
 class MenuCategoryViewModel : ViewModel(){
 
-    private val repository = MenuCategoryRepository()
-
-    var mCategoryItemList = MutableLiveData<MutableList<Categories?>>()
-
-    var mCategoryCurrent = MutableLiveData<Categories>()
+    private val _mCategoryItemList = MutableLiveData<List<CategoryData>>()
+    val mCategoryItemList = Transformations.map(_mCategoryItemList){
+        it.mapTo(arrayListOf()){ c ->
+            Category(
+                id = c.idCategory,
+                title = c.strCategory,
+                imgUrl = c.img
+            )
+        }
+    }
 
     fun getMenuCategoryList(){
-        repository.getMenuCatedoryList(object : GetMenuCategoryList{
-            override fun onSuccess(categoryItens: MutableList<Categories?>) {
-                mCategoryItemList.postValue(categoryItens)
+        MenuCategoryRepository.getMenuCatedoryList(
+            { categories ->
+                _mCategoryItemList.postValue(categories)
+            },{ throwable ->
+                // TODO
             }
-
-            override fun onErrorCode(errorCode: Int, message: String) {
-
-            }
-
-            override fun onFailure(message: String) {
-
-            }
-        })
+        )
     }
 }

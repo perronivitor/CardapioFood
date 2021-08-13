@@ -1,10 +1,10 @@
 package com.gruppe.cardapiofood.ui.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.adapter.MealsAdapter
-import com.gruppe.cardapiofood.ui.model.Categories
 import com.gruppe.cardapiofood.ui.model.Meals
+import com.gruppe.cardapiofood.ui.viewmodel.Category
 import com.gruppe.cardapiofood.ui.viewmodel.MealsViewModel
 
 class MealsFragment : Fragment() {
 
     private val args: MealsFragmentArgs by navArgs()
-    private lateinit var meals: Categories
+    private lateinit var meals: Category
 
     //Componentes
     private lateinit var viewFragment: View
@@ -47,7 +47,7 @@ class MealsFragment : Fragment() {
 
         recyclerView = viewFragment.findViewById(R.id.recyclerview)
 
-        viewModel.getMeals(meals.strCategory)
+        viewModel.getMeals(meals.title)
 
         isInstanced = savedInstanceState != null
 

@@ -1,11 +1,8 @@
 package com.gruppe.cardapiofood.ui.view
 
 import android.os.Bundle
-import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,71 +10,88 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
-import com.gruppe.cardapiofood.ui.model.Categories
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
+
+import android.view.MenuInflater
+import com.gruppe.cardapiofood.nonNullObserve
+import com.gruppe.cardapiofood.ui.model.CategoryData
+import com.gruppe.cardapiofood.ui.viewmodel.Category
 
 
 class MenuCategoriaFragment : Fragment() {
-
-    private val viewModel: MenuCategoryViewModel by viewModels()
-    private lateinit var viewFragment: View
-    private lateinit var adapter: MenuCategoriaAdapter
     private lateinit var recyclerView: RecyclerView
-    private var isInstanceCreate: Boolean = false
+    private val vm: MenuCategoryViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.menuItemLight -> {
+                // TODO
+            }
+            R.id.menuItemFavorite -> {
+                // TODO
+            }
+            R.id.menuItemSearch -> {
+                // TODO
+            }
+            R.id.menuItemSettings -> {
+                // TODO
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        viewFragment = inflater.inflate(R.layout.fragment_menu_category, container, false)
-        return viewFragment
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(
+            R.layout.fragment_menu_category,
+            container,
+            false
+        ).apply {
+            recyclerView = findViewById(R.id.recyclerview)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindViews()
-        isInstanceCreate = savedInstanceState != null
-        viewModel.getMenuCategoryList()
-        observers()
 
+        prepareRecyclerView()
+        setupObservers()
+
+        vm.getMenuCategoryList()
     }
 
-    override fun onResume() {
-        viewModel.getMenuCategoryList()
-        super.onResume()
-    }
-
-    private fun observers() {
-        viewModel.mCategoryItemList.observe(viewLifecycleOwner, {
-            if (it == null){return@observe}
-            if (!isInstanceCreate) prepareRecyclerView(it) else adapter.setData(it)
+    private fun setupObservers() {
+        vm.mCategoryItemList.nonNullObserve(viewLifecycleOwner, {
+            (recyclerView.adapter as MenuCategoriaAdapter).setData(it)
         })
+    }
 
-        viewModel.mCategoryCurrent.observe(viewLifecycleOwner,{category->
-            if (category != null){
-                //Passando dados por Safe Args
-                val directions =
-                    MenuCategoriaFragmentDirections
-                        .actionMenuCategoryFragmentToMealsFragment(category)
-                findNavController()
-                    .navigate(directions,AnimNextFragment.animOptions)
-
-                viewModel.mCategoryCurrent.postValue(null)
+    private fun prepareRecyclerView() {
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = MenuCategoriaAdapter {
+                navToMealsFragment(it)
             }
-        })
+        }
     }
 
-    private fun bindViews() {
-        recyclerView = viewFragment.findViewById(R.id.recyclerview)
-    }
-
-    /**
-     * Prepara a Recycler View
-     */
-    private fun prepareRecyclerView(itens : MutableList<Categories?>) {
-        adapter = MenuCategoriaAdapter(viewModel)
-        adapter.dataSet.addAll(itens)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+    private fun navToMealsFragment(category: Category) {
+        findNavController().navigate(
+            MenuCategoriaFragmentDirections.actionMenuCategoryFragmentToMealsFragment(category),
+            AnimNextFragment.animOptions
+        )
     }
 }
