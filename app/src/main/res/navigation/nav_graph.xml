@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_meals" >
         <argument
             android:name="meals"
-            app:argType="com.gruppe.cardapiofood.ui.model.Categories" />
+            app:argType="com.gruppe.cardapiofood.ui.viewmodel.Category" />
         <action
             android:id="@+id/action_mealsFragment_to_ingredientFragment"
             app:destination="@id/ingredientFragment" />

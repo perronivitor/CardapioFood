@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Categories(
+data class CategoryData(
     var idCategory: String = "",
     var strCategory: String = "",
     @SerializedName("strCategoryThumb")
