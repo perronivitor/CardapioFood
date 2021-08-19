@@ -14,7 +14,7 @@ class MenuCategoryViewModel : ViewModel(){
             Category(
                 id = c.idCategory,
                 title = c.strCategory,
-                imgUrl = c.img
+                imgUrl = c.imgUrl
             )
         }
     }

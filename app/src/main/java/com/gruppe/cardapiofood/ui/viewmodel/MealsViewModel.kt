@@ -1,33 +1,31 @@
 package com.gruppe.cardapiofood.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.gruppe.cardapiofood.ui.listener.GetMeals
-import com.gruppe.cardapiofood.ui.model.Meals
+import com.gruppe.cardapiofood.ui.model.MealData
 import com.gruppe.cardapiofood.ui.repository.MealsRepository
 
 class MealsViewModel : ViewModel() {
 
-    private val repository = MealsRepository()
-
-    var mMealsList = MutableLiveData<MutableList<Meals>>()
-
-    var mMealCurrent = MutableLiveData<Meals>()
-
-    fun getMeals(meal: String){
-        repository.getMeals(meal,object : GetMeals{
-            override fun onSuccess(mealsItens: MutableList<Meals>) {
-                mMealsList.postValue(mealsItens)
-
-            }
-
-            override fun onErrorCode(errorCode: Int, message: String) {
-
-            }
-
-            override fun onFailure(message: String) {
-
-            }
-        })
+    private val _mMealsList = MutableLiveData<List<MealData>>()
+    val mMealItemList = Transformations.map(_mMealsList){
+        it.mapTo(arrayListOf()){ m ->
+            Meal(
+                id = m.idMeal,
+                title = m.strMeal,
+                imgUrl = m.imgUrl
+            )
+        }
     }
+
+    fun getMealsList(category: String){
+        MealsRepository.getMeals(
+            category,
+            { meals -> _mMealsList.postValue(meals)
+            },{throwable ->
+
+            })
+    }
+
 }

@@ -13,13 +13,17 @@ import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
 
 import android.view.MenuInflater
+import com.gruppe.cardapiofood.databinding.FragmentMenuCategoryBinding
 import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.ui.model.CategoryData
 import com.gruppe.cardapiofood.ui.viewmodel.Category
 
 
 class MenuCategoriaFragment : Fragment() {
-    private lateinit var recyclerView: RecyclerView
+
+    private var _binding : FragmentMenuCategoryBinding? = null
+    private val binding get() = _binding!!
+
     private val vm: MenuCategoryViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +33,7 @@ class MenuCategoriaFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
+        menu.findItem(R.id.menuItemSearch).isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -38,9 +43,6 @@ class MenuCategoriaFragment : Fragment() {
                 // TODO
             }
             R.id.menuItemFavorite -> {
-                // TODO
-            }
-            R.id.menuItemSearch -> {
                 // TODO
             }
             R.id.menuItemSettings -> {
@@ -53,15 +55,9 @@ class MenuCategoriaFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(
-            R.layout.fragment_menu_category,
-            container,
-            false
-        ).apply {
-            recyclerView = findViewById(R.id.recyclerview)
-        }
+        savedInstanceState: Bundle?): View? {
+        _binding = FragmentMenuCategoryBinding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,12 +71,12 @@ class MenuCategoriaFragment : Fragment() {
 
     private fun setupObservers() {
         vm.mCategoryItemList.nonNullObserve(viewLifecycleOwner, {
-            (recyclerView.adapter as MenuCategoriaAdapter).setData(it)
+            (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(it)
         })
     }
 
     private fun prepareRecyclerView() {
-        recyclerView.apply {
+        binding.recyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = MenuCategoriaAdapter {
                 navToMealsFragment(it)
@@ -93,5 +89,10 @@ class MenuCategoriaFragment : Fragment() {
             MenuCategoriaFragmentDirections.actionMenuCategoryFragmentToMealsFragment(category),
             AnimNextFragment.animOptions
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

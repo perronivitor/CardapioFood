@@ -13,15 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.adapter.IngredientsAdapter
-import com.gruppe.cardapiofood.ui.model.Ingredients
-import com.gruppe.cardapiofood.ui.model.Meals
+import com.gruppe.cardapiofood.ui.model.IngredientsData
 import com.gruppe.cardapiofood.ui.viewmodel.IngredientsViewModel
+import com.gruppe.cardapiofood.ui.viewmodel.Meal
 import com.squareup.picasso.Picasso
 
 class IngredientFragment : Fragment() {
 
     private val args : IngredientFragmentArgs by navArgs()
-    private lateinit var meal : Meals
+    private lateinit var meal : Meal
 
     //Componentes
     private lateinit var viewFragment: View
@@ -45,8 +45,8 @@ class IngredientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        meal = args.ingredients
-        viewModel.getIngredients(meal.strMeal)
+        meal = args.meal
+        viewModel.getIngredients(meal.title)
 
         isInstanced = savedInstanceState != null
 
@@ -69,12 +69,12 @@ class IngredientFragment : Fragment() {
                 // Seta foto da receita
                 Picasso.get().load(it.img).into(imgMeal)
                 //Seto text nome receita
-                tvMeal.text = meal.strMeal
+                tvMeal.text = meal.title
                 tvInstructions.text=it.strInstructions
             }
         })
     }
-    private fun prepareDataForRecyclerView(ing: Ingredients):List<Pair<Boolean,String>>{
+    private fun prepareDataForRecyclerView(ing: IngredientsData):List<Pair<Boolean,String>>{
         val ingredients = mutableListOf<Pair<Boolean,String>>()
         ingredients.add(Pair(false , ((ing.strMeasure1 +" "+ ing.strIngredient1))))
         ingredients.add(Pair(false , ((ing.strMeasure2 +" "+ ing.strIngredient2))))

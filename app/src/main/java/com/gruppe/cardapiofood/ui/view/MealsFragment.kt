@@ -10,79 +10,76 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.AnimNextFragment
-import com.gruppe.cardapiofood.R
+import com.gruppe.cardapiofood.databinding.FragmentMealsBinding
+import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.ui.adapter.MealsAdapter
-import com.gruppe.cardapiofood.ui.model.Meals
 import com.gruppe.cardapiofood.ui.viewmodel.Category
+import com.gruppe.cardapiofood.ui.viewmodel.Meal
 import com.gruppe.cardapiofood.ui.viewmodel.MealsViewModel
 
 class MealsFragment : Fragment() {
 
-    private val args: MealsFragmentArgs by navArgs()
-    private lateinit var meals: Category
+    private  var _binding : FragmentMealsBinding? = null
+    private val binding get() = _binding!!
 
-    //Componentes
-    private lateinit var viewFragment: View
+    private val args: MealsFragmentArgs by navArgs()
+    private lateinit var category: Category
+
     private val viewModel: MealsViewModel by viewModels()
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: MealsAdapter
-    private var isInstanced: Boolean = false
 
     companion object {fun newInstance() = MealsFragment()}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        viewFragment = inflater.inflate(R.layout.fragment_meals, container, false)
-        return viewFragment
+        savedInstanceState: Bundle?): View {
+        _binding = FragmentMealsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Recupera o item selecionado no Menu de Categorias
-        meals = args.meals
+        category = args.category
 
-        recyclerView = viewFragment.findViewById(R.id.recyclerview)
-
-        viewModel.getMeals(meals.title)
-
-        isInstanced = savedInstanceState != null
+        viewModel.getMealsList(category.title)
 
         observer()
+
+        prepareRecyclerView()
 
     }
 
     private fun observer() {
-        viewModel.mMealsList.observe(viewLifecycleOwner, {
-            if (it == null) { return@observe }
-            if (!isInstanced) prepareRecyclerView(it) else adapter.setData(it)
-        })
-        viewModel.mMealCurrent.observe(viewLifecycleOwner,{meals->
-            if (meals == null) { return@observe }
-            val directions =  MealsFragmentDirections.actionMealsFragmentToIngredientFragment(meals)
-            findNavController().navigate(directions,AnimNextFragment.animOptions)
-            viewModel.mMealCurrent.postValue(null)
+        viewModel.mMealItemList.nonNullObserve(viewLifecycleOwner, {
+            (binding.recyclerview.adapter as MealsAdapter).setData(it)
         })
     }
 
     /**
      * Prepara a Recycler View
      */
-    private fun prepareRecyclerView(itens: MutableList<Meals>) {
-        adapter = MealsAdapter(viewModel)
-        adapter.dataSet.addAll(itens)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        //Componente de divisão dos itens da recyclerview
-        recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                this.context,
-                DividerItemDecoration.VERTICAL
-            )
+    private fun prepareRecyclerView() {
+        binding.recyclerview.apply {
+            //Componente de divisão dos itens da recyclerview
+            addItemDecoration(DividerItemDecoration(this.context,DividerItemDecoration.VERTICAL))
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = MealsAdapter {
+                navToIngredientsFragment(it)
+            }
+        }
+    }
+
+    private fun navToIngredientsFragment(meal: Meal) {
+        findNavController().navigate(
+            MealsFragmentDirections.actionMealsFragmentToIngredientFragment(meal),
+            AnimNextFragment.animOptions
         )
-        recyclerView.adapter = adapter
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

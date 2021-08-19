@@ -2,42 +2,48 @@ package com.gruppe.cardapiofood.ui.repository
 
 import android.util.Log
 import com.gruppe.cardapiofood.retrofit.RetrofitClient
-import com.gruppe.cardapiofood.ui.listener.GetMeals
-import com.gruppe.cardapiofood.ui.model.Meals
-import com.gruppe.cardapiofood.ui.model.RequestMeals
+import com.gruppe.cardapiofood.ui.model.MealData
+import com.gruppe.cardapiofood.ui.model.RequestListMeals
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
-class MealsRepository {
+object MealsRepository {
 
-    fun getMeals(meal: String, listener: GetMeals) {
-
-        RetrofitClient.service.getMeals(meal)?.enqueue(object : Callback<RequestMeals>{
-            override fun onResponse(call: Call<RequestMeals>, res: Response<RequestMeals>) {
-                try{
-                    when{
-                        res.isSuccessful->{
-                            res.body()?.let{list->
-                                Log.i("MealsRepository","Response -> $list")
-                                val meals = mutableListOf<Meals>()
-                                meals.addAll(list.meals)
-                                listener.onSuccess(meals)
+    fun getMeals(
+        category : String,
+        success : (meals : List<MealData>) -> Unit,
+        failure : (t : Throwable) -> Unit
+    ) {
+        RetrofitClient.service.getMeals(category)?.enqueue(object : Callback<RequestListMeals>{
+            override fun onResponse(
+                call: Call<RequestListMeals>,
+                res: Response<RequestListMeals>
+            ) {
+                try {
+                    when {
+                        res.isSuccessful -> {
+                            res.body()?.let { list ->
+                                Log.i("MenuCategoryRepository",list.toString())
+                                success(list.meals)
                             }
                         }
-                        else->{
-                            listener.onErrorCode(res.code(),res.errorBody().toString())
+                        else -> {
+                            "${res.code()}, ${res.message()}".let {
+                                Log.i("MenuCategoryRepository",it)
+                                failure(Exception(it))
+                            }
                         }
                     }
-                }catch (e : Exception){
-                    Log.e("MealsRepository",e.message.toString())
-                }
-            }
+                } catch (e: Exception) {
+                    Log.e("MenuCategoryRepository", e.message.toString())
+                    failure(Exception(e))
+                }            }
 
-            override fun onFailure(call: Call<RequestMeals>, t: Throwable) {
-                Log.e("MealsRepo_onFailure",t.message.toString())
-               listener.onFailure(t.message.toString())
-            }
+            override fun onFailure(call: Call<RequestListMeals>, t: Throwable) {
+                Log.e("MenuCategoryRepository", t.message.toString())
+                failure(t)            }
         })
     }
 

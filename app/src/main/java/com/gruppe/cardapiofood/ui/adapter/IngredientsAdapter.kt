@@ -4,13 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.R
-import com.gruppe.cardapiofood.ui.model.Ingredients
-import com.gruppe.cardapiofood.ui.model.Meals
-import com.squareup.picasso.Picasso
 
 class IngredientsAdapter() : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 

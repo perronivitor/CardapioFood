@@ -9,5 +9,5 @@ data class CategoryData(
     var idCategory: String = "",
     var strCategory: String = "",
     @SerializedName("strCategoryThumb")
-    var img: String = "",
+    var imgUrl: String = "",
 ) :Parcelable
