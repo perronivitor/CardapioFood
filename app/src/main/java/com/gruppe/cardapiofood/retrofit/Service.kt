@@ -15,6 +15,6 @@ interface Service {
     fun getMeals(@Query ("c") category: String ) : Call<RequestListMeals>?
 
     @GET("search.php")
-    fun getIngredients(@Query ("s") meal: String ) : Call<RequestIngredients>?
+    fun getIngredients(@Query ("s") meal: String ) : Call<RequestRecipe>?
 
 }

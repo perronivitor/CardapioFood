@@ -43,7 +43,8 @@ object MealsRepository {
 
             override fun onFailure(call: Call<RequestListMeals>, t: Throwable) {
                 Log.e("MenuCategoryRepository", t.message.toString())
-                failure(t)            }
+                failure(t)
+            }
         })
     }
 

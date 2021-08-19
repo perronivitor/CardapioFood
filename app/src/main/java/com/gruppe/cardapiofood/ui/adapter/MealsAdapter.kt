@@ -5,12 +5,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.databinding.ItemViewMealsBinding
 import com.gruppe.cardapiofood.load
-import com.gruppe.cardapiofood.ui.viewmodel.Category
 import com.gruppe.cardapiofood.ui.viewmodel.Meal
-import com.squareup.picasso.Picasso
+
 
 class MealsAdapter(private var dataSet: List<Meal>? = null,
                    private val onItemClick: (meal: Meal) -> Unit)

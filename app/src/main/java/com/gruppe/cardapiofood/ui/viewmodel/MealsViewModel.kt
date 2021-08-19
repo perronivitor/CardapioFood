@@ -3,6 +3,7 @@ package com.gruppe.cardapiofood.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.gruppe.cardapiofood.ui.model.Ingredient
 import com.gruppe.cardapiofood.ui.model.MealData
 import com.gruppe.cardapiofood.ui.repository.MealsRepository
 
@@ -27,5 +28,4 @@ class MealsViewModel : ViewModel() {
 
             })
     }
-
 }

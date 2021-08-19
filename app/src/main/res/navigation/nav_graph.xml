@@ -29,9 +29,9 @@
     </fragment>
     <fragment
         android:id="@+id/ingredientFragment"
-        android:name="com.gruppe.cardapiofood.ui.view.IngredientFragment"
+        android:name="com.gruppe.cardapiofood.ui.view.RecipeFragment"
         android:label="fragment_ingredients"
-        tools:layout="@layout/fragment_ingredients" >
+        tools:layout="@layout/fragment_recipe" >
         <argument
             android:name="meal"
             app:argType="com.gruppe.cardapiofood.ui.viewmodel.Meal" />
