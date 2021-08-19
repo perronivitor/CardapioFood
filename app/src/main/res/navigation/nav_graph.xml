@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/MenuCategoryFragment"
         android:name="com.gruppe.cardapiofood.ui.view.MenuCategoriaFragment"
-        android:label="Receitas"
+        android:label="Categorys"
         tools:layout="@layout/fragment_menu_category">
         <action
             android:id="@+id/action_MenuCategoryFragment_to_mealsFragment"
