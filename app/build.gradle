@@ -65,4 +65,10 @@ dependencies {
 
     //Picasso Api
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+   //Material Dialog
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+
+    //Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
 }

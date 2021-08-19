@@ -13,6 +13,7 @@ import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
 
 import android.view.MenuInflater
+import androidx.core.view.isVisible
 import com.gruppe.cardapiofood.databinding.FragmentMenuCategoryBinding
 import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.ui.model.CategoryData
@@ -70,9 +71,14 @@ class MenuCategoriaFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        vm.mCategoryItemList.nonNullObserve(viewLifecycleOwner, {
+        vm.mCategoryItemList.nonNullObserve(viewLifecycleOwner) {
             (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(it)
-        })
+        }
+
+        vm._mProgressBar.nonNullObserve(viewLifecycleOwner){
+            binding.progressBar.isVisible = it
+            vm._mProgressBar.postValue(null)
+        }
     }
 
     private fun prepareRecyclerView() {
@@ -90,6 +96,7 @@ class MenuCategoriaFragment : Fragment() {
             AnimNextFragment.animOptions
         )
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

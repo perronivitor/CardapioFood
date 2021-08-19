@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gruppe.cardapiofood.databinding.FragmentRecipeBinding
 import com.gruppe.cardapiofood.load
 import com.gruppe.cardapiofood.nonNullObserve
+import com.gruppe.cardapiofood.showDialogError
 import com.gruppe.cardapiofood.ui.adapter.RecipeAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.RecipeViewModel
 import com.gruppe.cardapiofood.ui.viewmodel.Meal
@@ -52,6 +54,16 @@ class RecipeFragment : Fragment() {
             (binding.recyclerview.adapter as RecipeAdapter).setData(it.ingredients)
             binding.tvPrepareMode.text = it.prepareMode
         })
+
+        viewModel.error.nonNullObserve(viewLifecycleOwner,{
+            showDialogError(requireContext(),"Error",it.toString())
+            viewModel.error.postValue(null)
+        })
+
+        viewModel._mProgressBar.nonNullObserve(viewLifecycleOwner){
+            binding.progressBar.isVisible = it
+            viewModel._mProgressBar.postValue(null)
+        }
     }
 
     private fun prepareRecyclerView() {

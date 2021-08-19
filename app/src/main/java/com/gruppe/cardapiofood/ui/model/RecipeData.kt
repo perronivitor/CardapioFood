@@ -51,12 +51,13 @@ data class RecipeData(
         ingredients.add(Ingredient(false, "$strMeasure8 $strIngredient8"))
         ingredients.add(Ingredient(false, "$strMeasure9 $strIngredient9"))
         ingredients.add(Ingredient(false, "$strMeasure10 $strIngredient10"))
-        ingredients.add(Ingredient(false, "$strIngredient11 $strMeasure11"))
+        ingredients.add(Ingredient(false, "$strIngredient11 $strMeasure11?:"))
         ingredients.add(Ingredient(false, "$strMeasure12 $strIngredient12"))
         ingredients.add(Ingredient(false, "$strMeasure13 $strIngredient13"))
         ingredients.add(Ingredient(false, "$strMeasure14 $strIngredient14"))
         ingredients.add(Ingredient(false, "$strMeasure15 $strIngredient15"))
-        val filter = ingredients.filterIndexed { _, i -> !i.description.trim().isNullOrEmpty() }
-        return filter
+        return ingredients.filterIndexed { _, i ->
+            !i.description.isNullOrBlank() && i.description != " null"
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.databinding.FragmentMealsBinding
 import com.gruppe.cardapiofood.nonNullObserve
+import com.gruppe.cardapiofood.showDialogError
 import com.gruppe.cardapiofood.ui.adapter.MealsAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.Category
 import com.gruppe.cardapiofood.ui.viewmodel.Meal
@@ -54,6 +56,16 @@ class MealsFragment : Fragment() {
         viewModel.mMealItemList.nonNullObserve(viewLifecycleOwner, {
             (binding.recyclerview.adapter as MealsAdapter).setData(it)
         })
+
+        viewModel._error.nonNullObserve(viewLifecycleOwner,{
+            showDialogError(requireContext(),"Error",it.toString())
+            viewModel._error.postValue(null)
+        })
+
+        viewModel._mProgressBar.nonNullObserve(viewLifecycleOwner){
+            binding.progressBar.isVisible = it
+            viewModel._mProgressBar.postValue(null)
+        }
     }
 
     /**
