@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/favoriteMealsFragment"
         android:name="com.gruppe.cardapiofood.ui.view.FavoriteMealsFragment"
-        android:label="favorite_meals_fragment"
+        android:label="Favorite Meals"
         tools:layout="@layout/favorite_meals_fragment" >
         <action
             android:id="@+id/action_favoriteMealsFragment_to_ingredientFragment"

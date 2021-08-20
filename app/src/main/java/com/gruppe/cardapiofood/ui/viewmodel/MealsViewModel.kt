@@ -18,7 +18,6 @@ class MealsViewModel : ViewModel() {
     val mMealItemList = Transformations.map(_mMealsList) {
         it.mapTo(arrayListOf()) { m ->
             Meal(
-                id = m.idMeal,
                 title = m.strMeal,
                 imgUrl = m.imgUrl
             )

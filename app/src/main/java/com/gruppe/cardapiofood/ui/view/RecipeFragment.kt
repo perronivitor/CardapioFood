@@ -7,14 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gruppe.cardapiofood.R
+import com.gruppe.cardapiofood.*
 import com.gruppe.cardapiofood.databinding.FragmentRecipeBinding
-import com.gruppe.cardapiofood.load
-import com.gruppe.cardapiofood.nonNullObserve
-import com.gruppe.cardapiofood.showDialogError
 import com.gruppe.cardapiofood.ui.adapter.RecipeAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.RecipeViewModel
 import com.gruppe.cardapiofood.ui.viewmodel.Meal
@@ -27,7 +24,7 @@ class RecipeFragment : Fragment() {
     private val args: RecipeFragmentArgs by navArgs()
     private lateinit var meal: Meal
 
-    private val viewModel: RecipeViewModel by viewModels()
+    private lateinit var viewModel: RecipeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,19 +36,26 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(
+            (requireActivity() as MainActivity),
+            RecipeViewModel.RecipeViewModelFactory(requireActivity().application))
+            .get(RecipeViewModel::class.java)
+
         meal = args.meal
         viewModel.getIngredients(meal.title)
+
+        //Inserir bloco para verificar se existe no BD aquela receita salva
+        viewModel.verifyIfMealContainInFavoriteDb(meal.title)
 
         binding.imgMeal.load(meal.imgUrl)
         binding.tvMeal.text = meal.title
 
         observer()
         prepareRecyclerView()
-        isCheckFavoriteButton()
 
+        //Listeners do Botão Favorito
         binding.btFavorite.setOnClickListener {
-            meal.isFavorite = !meal.isFavorite
-            isCheckFavoriteButton()
+            viewModel.setFavorite()
         }
     }
 
@@ -70,6 +74,9 @@ class RecipeFragment : Fragment() {
             binding.progressBar.isVisible = it
             viewModel._mProgressBar.postValue(null)
         }
+        viewModel.isFavorite.nonNullObserve(viewLifecycleOwner){
+            setColorFavoriteButton(it)
+        }
     }
 
     private fun prepareRecyclerView() {
@@ -85,14 +92,14 @@ class RecipeFragment : Fragment() {
         viewModel.setIsCheckIngredient(position)
     }
 
-    private fun isCheckFavoriteButton(){
+    private fun setColorFavoriteButton(isFavorite : Boolean){
 
         val colorEnable= ResourcesCompat
             .getColor(resources,R.color.primary,resources.newTheme())
         val colorDisable = ResourcesCompat
             .getColor(resources,R.color.secondaryLight,resources.newTheme())
 
-        when(meal.isFavorite){
+        when(isFavorite){
             true -> binding.btFavorite.setColorFilter(colorEnable)
             else -> binding.btFavorite.setColorFilter(colorDisable)
         }
@@ -101,10 +108,16 @@ class RecipeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        if (viewModel.isFavorite.value!! && !args.meal.isFavorite) save()
+        if (!viewModel.isFavorite.value!! && args.meal.isFavorite) delete()
+    }
 
-        if (meal.isFavorite && !args.meal.isFavorite) {/*salvar no banco*/}
-        if (!meal.isFavorite && args.meal.isFavorite) {/*deletar do bd*/}
+    private fun save(){
+        viewModel.saveFavoriteMeal(meal)
+    }
 
+    private fun delete(){
+        viewModel.deleteFavoriteMeal(meal)
     }
 
     override fun onDestroy() {
