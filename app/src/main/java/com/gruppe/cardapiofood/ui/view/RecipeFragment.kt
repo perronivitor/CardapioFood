@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.databinding.FragmentRecipeBinding
 import com.gruppe.cardapiofood.load
 import com.gruppe.cardapiofood.nonNullObserve
@@ -29,8 +31,7 @@ class RecipeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View {
         _binding = FragmentRecipeBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -46,7 +47,12 @@ class RecipeFragment : Fragment() {
 
         observer()
         prepareRecyclerView()
+        isCheckFavoriteButton()
 
+        binding.btFavorite.setOnClickListener {
+            meal.isFavorite = !meal.isFavorite
+            isCheckFavoriteButton()
+        }
     }
 
     private fun observer() {
@@ -77,6 +83,28 @@ class RecipeFragment : Fragment() {
 
     private fun setIsCheckIngredient(position: Int) {
         viewModel.setIsCheckIngredient(position)
+    }
+
+    private fun isCheckFavoriteButton(){
+
+        val colorEnable= ResourcesCompat
+            .getColor(resources,R.color.primary,resources.newTheme())
+        val colorDisable = ResourcesCompat
+            .getColor(resources,R.color.secondaryLight,resources.newTheme())
+
+        when(meal.isFavorite){
+            true -> binding.btFavorite.setColorFilter(colorEnable)
+            else -> binding.btFavorite.setColorFilter(colorDisable)
+        }
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        if (meal.isFavorite && !args.meal.isFavorite) {/*salvar no banco*/}
+        if (!meal.isFavorite && args.meal.isFavorite) {/*deletar do bd*/}
+
     }
 
     override fun onDestroy() {

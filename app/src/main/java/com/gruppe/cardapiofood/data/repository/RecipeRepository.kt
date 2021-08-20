@@ -1,9 +1,7 @@
-package com.gruppe.cardapiofood.ui.repository
+package com.gruppe.cardapiofood.data.repository
 
 import android.util.Log
 import com.gruppe.cardapiofood.retrofit.RetrofitClient
-import com.gruppe.cardapiofood.ui.model.MealData
-import com.gruppe.cardapiofood.ui.model.RecipeData
 import com.gruppe.cardapiofood.ui.model.RequestRecipe
 import com.gruppe.cardapiofood.ui.viewmodel.Recipe
 import kotlinx.coroutines.Dispatchers

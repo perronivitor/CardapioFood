@@ -30,8 +30,6 @@ class MealsFragment : Fragment() {
 
     private val viewModel: MealsViewModel by viewModels()
 
-    companion object {fun newInstance() = MealsFragment()}
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {

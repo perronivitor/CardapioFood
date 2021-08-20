@@ -44,7 +44,7 @@ class MenuCategoriaFragment : Fragment() {
                 // TODO
             }
             R.id.menuItemFavorite -> {
-                // TODO
+                navToFavoriteMealsFragment()
             }
             R.id.menuItemSettings -> {
                 // TODO
@@ -95,6 +95,13 @@ class MenuCategoriaFragment : Fragment() {
             MenuCategoriaFragmentDirections.actionMenuCategoryFragmentToMealsFragment(category),
             AnimNextFragment.animOptions
         )
+    }
+
+    private fun navToFavoriteMealsFragment(){
+        findNavController().navigate(
+            R.id.action_MenuCategoryFragment_to_favoriteMealsFragment,
+            null,
+            AnimNextFragment.animOptions)
     }
 
 

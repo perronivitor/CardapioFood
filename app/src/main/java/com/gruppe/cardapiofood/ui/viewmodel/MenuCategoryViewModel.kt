@@ -5,8 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gruppe.cardapiofood.ui.model.CategoryData
-import com.gruppe.cardapiofood.ui.repository.MenuCategoryRepository
-import kotlinx.coroutines.delay
+import com.gruppe.cardapiofood.data.repository.MenuCategoryRepository
 import kotlinx.coroutines.launch
 
 class MenuCategoryViewModel : ViewModel() {

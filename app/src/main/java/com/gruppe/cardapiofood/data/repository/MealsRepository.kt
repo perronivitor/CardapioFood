@@ -1,4 +1,4 @@
-package com.gruppe.cardapiofood.ui.repository
+package com.gruppe.cardapiofood.data.repository
 
 import android.util.Log
 import com.gruppe.cardapiofood.retrofit.RetrofitClient

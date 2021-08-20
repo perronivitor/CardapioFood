@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_MenuCategoryFragment_to_mealsFragment"
             app:destination="@id/mealsFragment" />
+        <action
+            android:id="@+id/action_MenuCategoryFragment_to_favoriteMealsFragment"
+            app:destination="@id/favoriteMealsFragment" />
     </fragment>
 
     <fragment
@@ -35,5 +38,14 @@
         <argument
             android:name="meal"
             app:argType="com.gruppe.cardapiofood.ui.viewmodel.Meal" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteMealsFragment"
+        android:name="com.gruppe.cardapiofood.ui.view.FavoriteMealsFragment"
+        android:label="favorite_meals_fragment"
+        tools:layout="@layout/favorite_meals_fragment" >
+        <action
+            android:id="@+id/action_favoriteMealsFragment_to_ingredientFragment"
+            app:destination="@id/ingredientFragment" />
     </fragment>
 </navigation>

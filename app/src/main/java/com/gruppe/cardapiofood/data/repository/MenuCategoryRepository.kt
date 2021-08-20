@@ -1,4 +1,4 @@
-package com.gruppe.cardapiofood.ui.repository
+package com.gruppe.cardapiofood.data.repository
 
 import android.util.Log
 import com.gruppe.cardapiofood.retrofit.RetrofitClient
@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.HttpException
 import retrofit2.Response
 import java.lang.Exception
 

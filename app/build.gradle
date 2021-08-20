@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
+    id 'kotlin-kapt'
 }
 
 android {
@@ -39,6 +40,8 @@ android {
 }
 
 dependencies {
+    def koin_version= "3.1.2"
+    def room_version = "2.3.0"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
@@ -71,4 +74,16 @@ dependencies {
 
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+
+    //Koin
+    implementation "io.insert-koin:koin-core:$koin_version"
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+
+    //Room
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+
 }

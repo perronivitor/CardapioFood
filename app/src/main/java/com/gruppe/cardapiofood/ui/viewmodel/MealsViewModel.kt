@@ -4,9 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gruppe.cardapiofood.ui.model.Ingredient
 import com.gruppe.cardapiofood.ui.model.MealData
-import com.gruppe.cardapiofood.ui.repository.MealsRepository
+import com.gruppe.cardapiofood.data.repository.MealsRepository
 import kotlinx.coroutines.launch
 
 class MealsViewModel : ViewModel() {
