@@ -9,7 +9,7 @@ import com.gruppe.cardapiofood.ui.viewmodel.Meal
 
 @Database(
     entities = [Meal::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class FavoriteMealDataBase :RoomDatabase(){
@@ -28,7 +28,9 @@ abstract class FavoriteMealDataBase :RoomDatabase(){
                         context.applicationContext,
                         FavoriteMealDataBase::class.java,
                         "favorite_meals_db"
-                    ).build()
+                    )
+                        .fallbackToDestructiveMigration()
+                        .build()
                     INSTANCE = instance
                 }
                 return instance

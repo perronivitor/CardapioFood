@@ -63,7 +63,8 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
     fun verifyIfMealContainInFavoriteDb(title:String){
         launchDataLoad {
-          _isFavorite.postValue(repository.searchMealInFavoriteList(title) >=1)
+            val repo = repository.searchMealInFavoriteList(title)
+          _isFavorite.postValue(repo != null && repo >=1 )
         }
     }
 

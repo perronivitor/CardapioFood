@@ -109,7 +109,12 @@ class RecipeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         if (viewModel.isFavorite.value!! && !args.meal.isFavorite) save()
-        if (!viewModel.isFavorite.value!! && args.meal.isFavorite) delete()
+        if (!viewModel.isFavorite.value!!) delete()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.isFavorite.postValue(false)
     }
 
     private fun save(){
