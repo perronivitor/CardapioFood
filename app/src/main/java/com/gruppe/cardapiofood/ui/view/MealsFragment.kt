@@ -55,14 +55,14 @@ class MealsFragment : Fragment() {
             (binding.recyclerview.adapter as MealsAdapter).setData(it)
         })
 
-        viewModel._error.nonNullObserve(viewLifecycleOwner,{
+        viewModel.error.nonNullObserve(viewLifecycleOwner,{
             showDialogError(requireContext(),"Error",it.toString())
-            viewModel._error.postValue(null)
+            viewModel.error.postValue(null)
         })
 
-        viewModel._mProgressBar.nonNullObserve(viewLifecycleOwner){
+        viewModel.mProgressBar.nonNullObserve(viewLifecycleOwner){
             binding.progressBar.isVisible = it
-            viewModel._mProgressBar.postValue(null)
+            viewModel.mProgressBar.postValue(null)
         }
     }
 

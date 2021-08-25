@@ -8,7 +8,7 @@ import com.gruppe.cardapiofood.ui.viewmodel.Meal
 
 
 @Database(
-    entities = [Meal::class],
+    entities = [MealEntity::class],
     version = 2,
     exportSchema = false
 )

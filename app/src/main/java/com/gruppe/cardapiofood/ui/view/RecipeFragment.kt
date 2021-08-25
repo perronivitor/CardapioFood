@@ -70,9 +70,9 @@ class RecipeFragment : Fragment() {
             viewModel.error.postValue(null)
         })
 
-        viewModel._mProgressBar.nonNullObserve(viewLifecycleOwner){
+        viewModel.mProgressBar.nonNullObserve(viewLifecycleOwner){
             binding.progressBar.isVisible = it
-            viewModel._mProgressBar.postValue(null)
+            viewModel.mProgressBar.postValue(null)
         }
         viewModel.isFavorite.nonNullObserve(viewLifecycleOwner){
             setColorFavoriteButton(it)

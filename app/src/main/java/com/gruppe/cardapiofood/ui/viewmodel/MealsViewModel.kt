@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
 
 class MealsViewModel : ViewModel() {
 
-    var _error = MutableLiveData<String?>(null)
+    var error = MutableLiveData<String?>(null)
 
-    var _mProgressBar = MutableLiveData<Boolean>(null)
+    var mProgressBar = MutableLiveData<Boolean>(null)
 
     private val _mMealsList = MutableLiveData<List<MealData>>()
     val mMealItemList = Transformations.map(_mMealsList) {
@@ -39,12 +39,12 @@ class MealsViewModel : ViewModel() {
     fun launchDataLoad(block: suspend () -> Unit) {
         viewModelScope.launch {
             try {
-                _mProgressBar.postValue(true)
+                mProgressBar.postValue(true)
                 block()
             } catch (e: Exception) {
                 //Como tratar Exception?
             } finally {
-                _mProgressBar.postValue(false)
+                mProgressBar.postValue(false)
             }
         }
     }

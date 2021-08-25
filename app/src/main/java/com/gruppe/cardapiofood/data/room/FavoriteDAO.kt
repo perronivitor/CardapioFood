@@ -11,15 +11,15 @@ import com.gruppe.cardapiofood.ui.viewmodel.Meal
 interface FavoriteDAO {
 
     @Insert
-    suspend fun save (meal : Meal)
+    suspend fun save (meal : MealEntity)
 
     @Delete
-    suspend fun delete (meal : Meal)
+    suspend fun delete (meal : MealEntity)
 
     @Query("SELECT id FROM table_favorite_meals WHERE title = :title")
     suspend fun searchMealInFavoriteList(title: String) : Int
 
     @Query("SELECT * FROM table_favorite_meals")
-    fun getAllFavoriteMeals(): LiveData<List<Meal>>
+    fun getAllFavoriteMeals(): LiveData<List<MealEntity>>
 
 }

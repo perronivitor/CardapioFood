@@ -7,13 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.gruppe.cardapiofood.data.repository.RecipeRepository
-import com.gruppe.cardapiofood.data.room.FavoriteDAO
 import com.gruppe.cardapiofood.data.room.FavoriteMealDataBase
 import com.gruppe.cardapiofood.data.room.FavoriteRepository
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.Exception
-import kotlin.coroutines.coroutineContext
 
 class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() {
 
@@ -25,7 +22,7 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
     var error = MutableLiveData<String?>(null)
 
-    var _mProgressBar = MutableLiveData<Boolean>(null)
+    var mProgressBar = MutableLiveData<Boolean>(null)
 
     fun getIngredients(meal: String) {
         launchDataLoad {
@@ -63,20 +60,20 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
     fun verifyIfMealContainInFavoriteDb(title:String){
         launchDataLoad {
-            val repo = repository.searchMealInFavoriteList(title)
-          _isFavorite.postValue(repo != null && repo >=1 )
+            val mealFavoriteId = repository.searchMealInFavoriteList(title)
+          _isFavorite.postValue(mealFavoriteId != null && mealFavoriteId >=1 )
         }
     }
 
     fun launchDataLoad(block: suspend () -> Unit) {
         viewModelScope.launch {
             try {
-                _mProgressBar.postValue(true)
+                mProgressBar.postValue(true)
                 block()
             } catch (e: Exception) {
                 //Como tratar Exception?
             } finally {
-                _mProgressBar.postValue(false)
+                mProgressBar.postValue(false)
             }
         }
     }
