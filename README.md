@@ -18,12 +18,12 @@ Tendo também a opção de selecionar aquela receita como favorita,
 que depois será mostrada em uma tela com todas as receitas que usuário marcar.
 
 ## 🙌 Recursos empregados 
-*Jetpack Navigation
-*Coroutines
-*Retrofit
-*Room
-*Arquitetura MVVM
-*Picasso
+* Jetpack Navigation
+* Coroutines
+* Retrofit
+* Room
+* Arquitetura MVVM
+* Picasso
 
 ---
 ## 👨‍💻 Atenciosamente Dev Vitor Perroni 🙋‍♂️
