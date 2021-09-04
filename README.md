@@ -1,11 +1,11 @@
-#😋 CardapioFood APP
+# 😋 CardapioFood APP
 
 >Status do projeto : Em desenvolvimento
 
-#📚 Mentor
+# 📚 Mentor
 >>https://www.linkedin.com/in/leonardoarnaud/
 
-##📋 Descrição do projeto
+## 📋 Descrição do projeto
 
 Projeto consiste em um app de receitas,
 que consome os dados da API https://www.themealdb.com/api.php.
@@ -17,7 +17,7 @@ fotos,descrição do prato e tambem modo de preparo.
 Tendo também a opção de selecionar aquela receita como favorita, 
 que depois será mostrada em uma tela com todas as receitas que usuário marcar.
 
-##🙌 Recursos empregados 
+## 🙌 Recursos empregados 
 *Jetpack Navigation
 *Coroutines
 *Retrofit
@@ -26,4 +26,4 @@ que depois será mostrada em uma tela com todas as receitas que usuário marcar.
 *Picasso
 
 ---
-##👨‍💻 Atenciosamente Dev Vitor Perroni 🙋‍♂️
+## 👨‍💻 Atenciosamente Dev Vitor Perroni 🙋‍♂️
