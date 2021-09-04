@@ -9,7 +9,7 @@
 
 Projeto consiste em um app de receitas,
 que consome os dados da API https://www.themealdb.com/api.php.
-O aplicativo está dividido numa tela de Categoria dse receitas,
+O aplicativo está dividido numa tela de Categoria de receitas,
 ao selecionar uma categoria usuário é direcionado para a tela de Receitas,
 onde temos uma lista de receitas para a categoria selecionada.
 Ao clicar em uma receita o usuário tem acesso aos ingredientes,
