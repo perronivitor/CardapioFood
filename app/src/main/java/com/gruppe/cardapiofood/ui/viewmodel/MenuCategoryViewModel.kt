@@ -1,16 +1,13 @@
 package com.gruppe.cardapiofood.ui.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.gruppe.cardapiofood.ui.model.CategoryData
 import com.gruppe.cardapiofood.data.repository.MenuCategoryRepository
 import kotlinx.coroutines.launch
 
 class MenuCategoryViewModel : ViewModel() {
 
-    var _mProgressBar = MutableLiveData<Boolean>(null)
+    var mProgressBar = MutableLiveData<Boolean>(null)
 
     private val _mCategoryItemList = MutableLiveData<List<CategoryData>>()
     val mCategoryItemList = Transformations.map(_mCategoryItemList) {
@@ -38,12 +35,12 @@ class MenuCategoryViewModel : ViewModel() {
     fun launchDataLoad(block : suspend () -> Unit ){
         viewModelScope.launch {
             try{
-                _mProgressBar.postValue(true)
+                mProgressBar.postValue(true)
                 block()
             }catch (e: Exception){
                 //Como tratar Exception?
             }finally {
-                _mProgressBar.postValue(false)
+                mProgressBar.postValue(false)
             }
         }
     }

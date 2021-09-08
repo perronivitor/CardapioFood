@@ -6,26 +6,27 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
-
 import android.view.MenuInflater
 import androidx.core.view.isVisible
 import com.gruppe.cardapiofood.databinding.FragmentMenuCategoryBinding
+import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
-import com.gruppe.cardapiofood.ui.model.CategoryData
 import com.gruppe.cardapiofood.ui.viewmodel.Category
 
 
 class MenuCategoriaFragment : Fragment() {
 
-    private var _binding : FragmentMenuCategoryBinding? = null
+    private var _binding: FragmentMenuCategoryBinding? = null
     private val binding get() = _binding!!
 
     private val vm: MenuCategoryViewModel by viewModels()
+
+    private val navControler by lazy {
+        findNavController()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MenuCategoriaFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
+        when (item.itemId) {
             R.id.menuItemLight -> {
                 // TODO
             }
@@ -56,7 +57,8 @@ class MenuCategoriaFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentMenuCategoryBinding.inflate(inflater, container, false)
         return binding?.root
     }
@@ -75,9 +77,9 @@ class MenuCategoriaFragment : Fragment() {
             (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(it)
         }
 
-        vm._mProgressBar.nonNullObserve(viewLifecycleOwner){
+        vm.mProgressBar.nonNullObserve(viewLifecycleOwner) {
             binding.progressBar.isVisible = it
-            vm._mProgressBar.postValue(null)
+            vm.mProgressBar.postValue(null)
         }
     }
 
@@ -91,17 +93,14 @@ class MenuCategoriaFragment : Fragment() {
     }
 
     private fun navToMealsFragment(category: Category) {
-        findNavController().navigate(
-            MenuCategoriaFragmentDirections.actionMenuCategoryFragmentToMealsFragment(category),
-            AnimNextFragment.animOptions
+        navControler.navigateWithAnimations(
+            MenuCategoriaFragmentDirections.actionMenuCategoryFragmentToMealsFragment(category)
         )
+
     }
 
-    private fun navToFavoriteMealsFragment(){
-        findNavController().navigate(
-            R.id.action_MenuCategoryFragment_to_favoriteMealsFragment,
-            null,
-            AnimNextFragment.animOptions)
+    private fun navToFavoriteMealsFragment() {
+        navControler.navigateWithAnimations(R.id.action_MenuCategoryFragment_to_favoriteMealsFragment)
     }
 
 

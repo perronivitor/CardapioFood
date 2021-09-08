@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.databinding.FragmentMealsBinding
+import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.showDialogError
 import com.gruppe.cardapiofood.ui.adapter.MealsAdapter
@@ -22,7 +22,7 @@ import com.gruppe.cardapiofood.ui.viewmodel.MealsViewModel
 
 class MealsFragment : Fragment() {
 
-    private  var _binding : FragmentMealsBinding? = null
+    private var _binding: FragmentMealsBinding? = null
     private val binding get() = _binding!!
 
     private val args: MealsFragmentArgs by navArgs()
@@ -30,9 +30,14 @@ class MealsFragment : Fragment() {
 
     private val viewModel: MealsViewModel by viewModels()
 
+    private val navController by lazy {
+        findNavController()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMealsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,12 +60,12 @@ class MealsFragment : Fragment() {
             (binding.recyclerview.adapter as MealsAdapter).setData(it)
         })
 
-        viewModel.error.nonNullObserve(viewLifecycleOwner,{
-            showDialogError(requireContext(),"Error",it.toString())
+        viewModel.error.nonNullObserve(viewLifecycleOwner, {
+            showDialogError(requireContext(), "Error", it.toString())
             viewModel.error.postValue(null)
         })
 
-        viewModel.mProgressBar.nonNullObserve(viewLifecycleOwner){
+        viewModel.mProgressBar.nonNullObserve(viewLifecycleOwner) {
             binding.progressBar.isVisible = it
             viewModel.mProgressBar.postValue(null)
         }
@@ -72,7 +77,7 @@ class MealsFragment : Fragment() {
     private fun prepareRecyclerView() {
         binding.recyclerview.apply {
             //Componente de divisão dos itens da recyclerview
-            addItemDecoration(DividerItemDecoration(this.context,DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = MealsAdapter {
@@ -82,9 +87,8 @@ class MealsFragment : Fragment() {
     }
 
     private fun navToIngredientsFragment(meal: Meal) {
-        findNavController().navigate(
-            MealsFragmentDirections.actionMealsFragmentToIngredientFragment(meal),
-            AnimNextFragment.animOptions
+        navController.navigateWithAnimations(
+            MealsFragmentDirections.actionMealsFragmentToIngredientFragment(meal)
         )
     }
 

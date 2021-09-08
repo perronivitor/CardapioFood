@@ -15,5 +15,5 @@ data class MealEntity (
     @ColumnInfo(name = "imgUrl")
     val imgUrl: String,
     @ColumnInfo(name = "favorite")
-    var isFavorite : Boolean = false
+    val isFavorite : Boolean = false
 )

@@ -13,7 +13,7 @@ class FavoriteMealsViewModel(private val repository: FavoriteRepository) : ViewM
     private var _mFavoriteMelsList = repository.favoriteList
     val mFavoriteMealsList get() = _mFavoriteMelsList
 
-    var _mProgressBar = MutableLiveData<Boolean>(false)
+    var mProgressBar = MutableLiveData<Boolean>(false)
 
     /**
      * FACTORY

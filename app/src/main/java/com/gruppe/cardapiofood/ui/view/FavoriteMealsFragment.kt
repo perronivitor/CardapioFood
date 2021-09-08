@@ -1,5 +1,6 @@
 package com.gruppe.cardapiofood.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,16 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gruppe.cardapiofood.AnimNextFragment
 import com.gruppe.cardapiofood.MainActivity
 import com.gruppe.cardapiofood.databinding.FavoriteMealsFragmentBinding
+import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.ui.adapter.FavoriteMealsAdapter
-import com.gruppe.cardapiofood.ui.adapter.MealsAdapter
-import com.gruppe.cardapiofood.ui.adapter.RecipeAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.FavoriteMealsViewModel
 import com.gruppe.cardapiofood.ui.viewmodel.Meal
-import com.gruppe.cardapiofood.ui.viewmodel.RecipeViewModel
 
 class FavoriteMealsFragment : Fragment() {
 
@@ -27,6 +25,10 @@ class FavoriteMealsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: FavoriteMealsViewModel
+
+    private val navController by lazy {
+        findNavController()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,18 +46,18 @@ class FavoriteMealsFragment : Fragment() {
             FavoriteMealsViewModel.FavoriteMealsViewModelFactory(requireActivity().application))
             .get(FavoriteMealsViewModel::class.java)
 
-
         observer()
         prepareRecyclerView()
+
     }
 
     private fun observer() {
         viewModel.mFavoriteMealsList.nonNullObserve(viewLifecycleOwner, {
             (binding.recyclerview.adapter as FavoriteMealsAdapter).setData(it)
         })
-        viewModel._mProgressBar.nonNullObserve(viewLifecycleOwner){
+        viewModel.mProgressBar.nonNullObserve(viewLifecycleOwner){
             binding.progressBar.isVisible = it
-            viewModel._mProgressBar.postValue(null)
+            viewModel.mProgressBar.postValue(null)
         }
     }
 
@@ -72,9 +74,8 @@ class FavoriteMealsFragment : Fragment() {
     }
 
     private fun navToIngredientsFragment(meal: Meal) {
-        findNavController().navigate(
+        navController.navigateWithAnimations(
             FavoriteMealsFragmentDirections.actionFavoriteMealsFragmentToIngredientFragment(meal),
-            AnimNextFragment.animOptions
         )
     }
 
