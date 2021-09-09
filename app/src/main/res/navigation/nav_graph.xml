@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/mealsFragment"
         android:name="com.gruppe.cardapiofood.ui.view.MealsFragment"
-        android:label="fragment_meals"
+        android:label="Meals"
         tools:layout="@layout/fragment_meals" >
         <argument
             android:name="category"
@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/ingredientFragment"
         android:name="com.gruppe.cardapiofood.ui.view.RecipeFragment"
-        android:label="fragment_ingredients"
+        android:label="Ingredients"
         tools:layout="@layout/fragment_recipe" >
         <argument
             android:name="meal"

@@ -32,8 +32,8 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
         }
     }
 
-    fun setFavorite(){
-        _isFavorite.postValue(!_isFavorite.value!!)
+    fun setFavorite(isChecked : Boolean){
+        _isFavorite.postValue(isChecked)
     }
 
     fun setIsCheckIngredient(position: Int) {

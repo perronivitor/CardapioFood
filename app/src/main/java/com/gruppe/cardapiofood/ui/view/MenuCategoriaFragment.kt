@@ -12,17 +12,13 @@ import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
 import android.view.MenuInflater
 import androidx.core.view.isVisible
-import com.gruppe.cardapiofood.data.repository.MenuCategoryRepository
 import com.gruppe.cardapiofood.databinding.FragmentMenuCategoryBinding
 import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.retrofit.Resultado
 import com.gruppe.cardapiofood.showDialogError
-import com.gruppe.cardapiofood.ui.model.CategoryData
-import com.gruppe.cardapiofood.ui.model.RequestListCategories
 import com.gruppe.cardapiofood.ui.viewmodel.Category
 import java.net.ConnectException
-import javax.xml.transform.Transformer
 
 
 class MenuCategoriaFragment : Fragment() {
@@ -74,46 +70,38 @@ class MenuCategoriaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         prepareRecyclerView()
         setupObservers()
     }
 
     private fun setupObservers() {
 
-        vm.getMenuCategoryList().nonNullObserve(viewLifecycleOwner){ result ->
+        vm.mCategoryList.nonNullObserve(viewLifecycleOwner){ result ->
             binding.progressBar.isVisible = true
             try {
-                result?.let { resultado ->
-                    when (resultado) {
+                result?.let { r ->
+                    when (r) {
                         is Resultado.Sucesso -> {
-                            resultado.dado?.let { category ->
+                            r.dado?.let { category ->
                                 setDataAdapter(category)
                             }
                         }
                         is Resultado.Erro -> {
-
+                            showDialogError(requireContext(),"Error",r.exception.message.toString())
                         }
                     }
                 }
-            } catch (e: ConnectException) {
-                Log.i("MenuFrag", "getMenuCategoryList: ")
-
-
             } catch (e: Exception) {
-                Log.i("MenuFrag", "getMenuCategoryList:  ")
-
+                Log.i("MenuFrag", "getMenuCategoryList: Error->${e.message} ")
+                showDialogError(requireContext(),"Error","Erro desconhecido!")
             } finally {
-                Log.i("MenuFrag", "getMenuCategoryList: Finally")
                 binding.progressBar.isVisible = false
             }
         }
     }
 
-    private fun setDataAdapter(cat : List<CategoryData>){
-        
-        (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(categories)
+        private fun setDataAdapter(category : List<Category>){
+        (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(category)
     }
 
     private fun prepareRecyclerView() {

@@ -6,14 +6,18 @@
         <entry key="..\:/AndroidStudioProjects/mentoria/vitor/CardapioFood/app/src/main/res/layout/content_main.xml" value="0.23505434782608695" />
         <entry key="..\:/AndroidStudioProjects/mentoria/vitor/CardapioFood/app/src/main/res/menu/menu_main.xml" value="0.3359375" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/drawable/error.xml" value="0.2169230769230769" />
+        <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/drawable/ic_favorite_checked.xml" value="0.2203125" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/favorite_meals_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/fragment_ingredients.xml" value="0.18518518518518517" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/fragment_meals.xml" value="0.18518518518518517" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/fragment_menu_category.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/fragment_recipe.xml" value="0.18" />
+        <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/fragment_recipe.xml" value="0.22" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/item_view_favorite_meal_meals.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/item_view_favorite_meals.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/layout/item_view_recipe.xml" value="0.1" />
         <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/menu/menu_main.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/vitor/AndroidStudioProjects/CardapioFood/app/src/main/res/xml/custon_favorite_checkbox.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>

@@ -1,3 +1,5 @@
 package com.gruppe.cardapiofood.ui.model
 
-data class RequestListCategories (var categories : List<CategoryData>)
+import com.gruppe.cardapiofood.ui.viewmodel.Category
+
+data class RequestListCategories (var categories : List<Category>)

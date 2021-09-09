@@ -2,7 +2,6 @@ package com.gruppe.cardapiofood.data.room
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.gruppe.cardapiofood.ui.viewmodel.Category
 import com.gruppe.cardapiofood.ui.viewmodel.Meal
 
 class FavoriteRepository(private val favoriteDAO: FavoriteDAO) {

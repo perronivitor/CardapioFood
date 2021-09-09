@@ -18,9 +18,9 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgMeal"
@@ -51,16 +51,16 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Bolinho de arroz" />
 
-                <ImageButton
+                <CheckBox
                     android:id="@+id/btFavorite"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:button="@xml/custon_favorite_checkbox"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_baseline_favorite_24"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:backgroundTint ="@color/white"
-                    app:tint="@color/secondaryLight" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -84,42 +84,47 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16sp"
-                android:textSize="18sp"
-                android:textColor="@color/secondaryDark"
-                android:textStyle="bold"
-                android:text="Ingredientes"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_view_recipe"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:textStyle="bold"
-                android:textColor="@color/secondaryDark"
-                android:textSize="18sp"
-                android:text= "Modo de Preparo"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16sp"
+                    android:text="Ingredientes"
+                    android:textColor="@color/secondaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvPrepareMode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:textSize="16sp"
-                android:textColor="@color/secondary"
-                tools:text="@tools:sample/lorem/random"
-                />
+                <ListView
+                    android:id="@+id/list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp"
+                    tools:listitem="@layout/item_view_recipe"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="Modo de Preparo"
+                    android:textColor="@color/secondaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPrepareMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@color/secondary"
+                    android:textSize="16sp"
+                    tools:text="@tools:sample/lorem/random" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

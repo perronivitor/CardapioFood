@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -51,18 +50,20 @@ class RecipeFragment : Fragment() {
         binding.tvMeal.text = meal.title
 
         observer()
-        prepareRecyclerView()
 
         //Listeners do Botão Favorito
         binding.btFavorite.setOnClickListener {
-            viewModel.setFavorite()
+            viewModel.setFavorite(binding.btFavorite.isChecked)
         }
     }
 
     private fun observer() {
-        viewModel.mMealIngredientItemList.nonNullObserve(viewLifecycleOwner, {
-            (binding.recyclerview.adapter as RecipeAdapter).setData(it.ingredients)
-            binding.tvPrepareMode.text = it.prepareMode
+        viewModel.mMealIngredientItemList.nonNullObserve(viewLifecycleOwner, {listIngredients->
+            binding.listView.apply {
+                adapter = RecipeAdapter(requireActivity(),listIngredients.ingredients){
+                    setIsCheckIngredient(it)
+                }
+            }
         })
 
         viewModel.error.nonNullObserve(viewLifecycleOwner,{
@@ -74,47 +75,14 @@ class RecipeFragment : Fragment() {
             binding.progressBar.isVisible = it
             viewModel.mProgressBar.postValue(null)
         }
-        viewModel.isFavorite.nonNullObserve(viewLifecycleOwner){
-            setColorFavoriteButton(it)
-        }
-    }
 
-    private fun prepareRecyclerView() {
-        binding.recyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = RecipeAdapter { positionReturn ->
-                setIsCheckIngredient(positionReturn)
-            }
+        viewModel.isFavorite.nonNullObserve(viewLifecycleOwner){isChecked->
+            if (isChecked) save() else delete()
         }
     }
 
     private fun setIsCheckIngredient(position: Int) {
         viewModel.setIsCheckIngredient(position)
-    }
-
-    private fun setColorFavoriteButton(isFavorite : Boolean){
-
-        val colorEnable= ResourcesCompat
-            .getColor(resources,R.color.primary,resources.newTheme())
-        val colorDisable = ResourcesCompat
-            .getColor(resources,R.color.secondaryLight,resources.newTheme())
-
-        when(isFavorite){
-            true -> binding.btFavorite.setColorFilter(colorEnable)
-            else -> binding.btFavorite.setColorFilter(colorDisable)
-        }
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (viewModel.isFavorite.value!! && !args.meal.isFavorite) save()
-        if (!viewModel.isFavorite.value!!) delete()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.isFavorite.postValue(false)
     }
 
     private fun save(){

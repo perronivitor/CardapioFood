@@ -19,9 +19,11 @@ object MenuCategoryRepository {
                 emit(Resultado.Erro(exception = Exception("Falha ao buscar o endereco")))
             }
         } catch (e: ConnectException) {
+            e.printStackTrace()
             emit(Resultado.Erro(exception = Exception("Falha na comunicação com API")))
         } catch (e: Exception) {
-            emit(Resultado.Erro(exception = e))
+            e.printStackTrace()
+            emit(Resultado.Erro(exception =Exception("Erro desconhecido")))
         }
     }
 
