@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import com.gruppe.cardapiofood.databinding.FragmentMenuCategoryBinding
 import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
+import com.gruppe.cardapiofood.showDialogError
 import com.gruppe.cardapiofood.ui.viewmodel.Category
 
 
@@ -81,6 +82,11 @@ class MenuCategoriaFragment : Fragment() {
             binding.progressBar.isVisible = it
             vm.mProgressBar.postValue(null)
         }
+
+        vm.error.nonNullObserve(viewLifecycleOwner) {
+            showDialogError(requireContext(), "Error!", it)
+            vm.error.postValue(null)
+        }
     }
 
     private fun prepareRecyclerView() {
@@ -96,13 +102,11 @@ class MenuCategoriaFragment : Fragment() {
         navControler.navigateWithAnimations(
             MenuCategoriaFragmentDirections.actionMenuCategoryFragmentToMealsFragment(category)
         )
-
     }
 
     private fun navToFavoriteMealsFragment() {
         navControler.navigateWithAnimations(R.id.action_MenuCategoryFragment_to_favoriteMealsFragment)
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

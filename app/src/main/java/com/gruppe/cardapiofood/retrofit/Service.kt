@@ -9,12 +9,12 @@ import retrofit2.http.Query
 interface Service {
 
     @GET("categories.php")
-    suspend fun getMenuCategoryList(): Call<RequestListCategories?>
+     suspend fun getMenuCategoryList(): RequestListCategories
 
     @GET("filter.php")
-    suspend fun getMeals(@Query ("c") category: String ) : Call<RequestListMeals>?
+     fun getMeals(@Query ("c") category: String ) : Call<RequestListMeals>?
 
     @GET("search.php")
-    suspend fun getIngredients(@Query ("s") meal: String ) : Call<RequestRecipe>?
+     fun getIngredients(@Query ("s") meal: String ) : Call<RequestRecipe>?
 
 }
