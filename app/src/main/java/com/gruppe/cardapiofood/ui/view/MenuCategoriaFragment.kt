@@ -1,6 +1,7 @@
 package com.gruppe.cardapiofood.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -11,11 +12,17 @@ import com.gruppe.cardapiofood.ui.adapter.MenuCategoriaAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.MenuCategoryViewModel
 import android.view.MenuInflater
 import androidx.core.view.isVisible
+import com.gruppe.cardapiofood.data.repository.MenuCategoryRepository
 import com.gruppe.cardapiofood.databinding.FragmentMenuCategoryBinding
 import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
+import com.gruppe.cardapiofood.retrofit.Resultado
 import com.gruppe.cardapiofood.showDialogError
+import com.gruppe.cardapiofood.ui.model.CategoryData
+import com.gruppe.cardapiofood.ui.model.RequestListCategories
 import com.gruppe.cardapiofood.ui.viewmodel.Category
+import java.net.ConnectException
+import javax.xml.transform.Transformer
 
 
 class MenuCategoriaFragment : Fragment() {
@@ -67,26 +74,46 @@ class MenuCategoriaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         prepareRecyclerView()
         setupObservers()
-
-        vm.getMenuCategoryList()
     }
 
     private fun setupObservers() {
-        vm.mCategoryItemList.nonNullObserve(viewLifecycleOwner) {
-            (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(it)
-        }
 
-        vm.mProgressBar.nonNullObserve(viewLifecycleOwner) {
-            binding.progressBar.isVisible = it
-            vm.mProgressBar.postValue(null)
-        }
+        vm.getMenuCategoryList().nonNullObserve(viewLifecycleOwner){ result ->
+            binding.progressBar.isVisible = true
+            try {
+                result?.let { resultado ->
+                    when (resultado) {
+                        is Resultado.Sucesso -> {
+                            resultado.dado?.let { category ->
+                                setDataAdapter(category)
+                            }
+                        }
+                        is Resultado.Erro -> {
 
-        vm.error.nonNullObserve(viewLifecycleOwner) {
-            showDialogError(requireContext(), "Error!", it)
-            vm.error.postValue(null)
+                        }
+                    }
+                }
+            } catch (e: ConnectException) {
+                Log.i("MenuFrag", "getMenuCategoryList: ")
+
+
+            } catch (e: Exception) {
+                Log.i("MenuFrag", "getMenuCategoryList:  ")
+
+            } finally {
+                Log.i("MenuFrag", "getMenuCategoryList: Finally")
+                binding.progressBar.isVisible = false
+            }
         }
+    }
+
+    private fun setDataAdapter(cat : List<CategoryData>){
+        
+        (binding.recyclerview.adapter as MenuCategoriaAdapter).setData(categories)
     }
 
     private fun prepareRecyclerView() {
