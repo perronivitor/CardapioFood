@@ -36,8 +36,8 @@
         android:label="Ingredients"
         tools:layout="@layout/fragment_recipe" >
         <argument
-            android:name="meal"
-            app:argType="com.gruppe.cardapiofood.ui.viewmodel.Meal" />
+            android:name="recipeTitle"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/favoriteMealsFragment"

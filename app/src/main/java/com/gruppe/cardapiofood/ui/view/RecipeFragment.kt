@@ -1,6 +1,7 @@
 package com.gruppe.cardapiofood.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +9,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.gruppe.cardapiofood.*
 import com.gruppe.cardapiofood.databinding.FragmentRecipeBinding
 import com.gruppe.cardapiofood.ui.adapter.RecipeAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.RecipeViewModel
-import com.gruppe.cardapiofood.ui.viewmodel.Meal
 
 class RecipeFragment : Fragment() {
 
@@ -21,13 +20,17 @@ class RecipeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val args: RecipeFragmentArgs by navArgs()
-    private lateinit var meal: Meal
+    private lateinit var recipeTitle: String
 
-    private lateinit var viewModel: RecipeViewModel
+    private lateinit var vm: RecipeViewModel
+
+    //Verifica se existe uma instancia
+    private var isIntance = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentRecipeBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -35,62 +38,75 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(
+        vm = ViewModelProvider(
             (requireActivity() as MainActivity),
             RecipeViewModel.RecipeViewModelFactory(requireActivity().application))
             .get(RecipeViewModel::class.java)
 
-        meal = args.meal
-        viewModel.getIngredients(meal.title)
+        recipeTitle = args.recipeTitle
 
-        //Inserir bloco para verificar se existe no BD aquela receita salva
-        viewModel.verifyIfMealContainInFavoriteDb(meal.title)
+        isIntance = savedInstanceState != null
+        if (!isIntance) {
+            //Verifico se existe registro no ROOM
+            vm.verifyIfMealContainInFavoriteDb(recipeTitle) { exist ->
+                if (exist) {
+                    Log.i("observerRecipe", "ROOM")
+                    vm.getRecipe(recipeTitle) { recipe ->
+                        Log.i("observerRecipe", recipe.toString())
+                        vm.setRecipe(recipe)
+                    }
+                } else {
+                    Log.i("observerRecipe", "API")
+                    vm.getIngredients(recipeTitle)
+                }
+            }
 
-        binding.imgMeal.load(meal.imgUrl)
-        binding.tvMeal.text = meal.title
+        }
 
         observer()
+        listeners()
+    }
 
-        //Listeners do Botão Favorito
+    private fun listeners() {
         binding.btFavorite.setOnClickListener {
-            viewModel.setFavorite(binding.btFavorite.isChecked)
+            vm.setFavorite(binding.btFavorite.isChecked)
         }
     }
 
     private fun observer() {
-        viewModel.mMealIngredientItemList.nonNullObserve(viewLifecycleOwner, {listIngredients->
+        vm.mRecipe.nonNullObserve(viewLifecycleOwner, { recipe ->
+            Log.i("observerRecipe", recipe.toString())
             binding.listView.apply {
-                adapter = RecipeAdapter(requireActivity(),listIngredients.ingredients){
-                    setIsCheckIngredient(it)
-                }
+                adapter = RecipeAdapter(requireActivity(), recipe.ingredients)
             }
+            binding.imgMeal.load(recipe.imgUrl)
+            binding.tvPrepareMode.text = recipe.prepareMode
+            binding.btFavorite.isChecked = recipe.isFavorite
+            binding.tvMeal.text = recipe.title
         })
 
-        viewModel.error.nonNullObserve(viewLifecycleOwner,{
-            showDialogError(requireContext(),"Error",it.toString())
-            viewModel.error.postValue(null)
+        vm.error.nonNullObserve(viewLifecycleOwner, {
+            showDialogError(requireContext(), "Error", it.toString())
+            vm.error.postValue(null)
         })
 
-        viewModel.mProgressBar.nonNullObserve(viewLifecycleOwner){
+        vm.mProgressBar.nonNullObserve(viewLifecycleOwner) {
             binding.progressBar.isVisible = it
-            viewModel.mProgressBar.postValue(null)
+            vm.mProgressBar.postValue(null)
         }
 
-        viewModel.isFavorite.nonNullObserve(viewLifecycleOwner){isChecked->
-            if (isChecked) save() else delete()
+        vm.isFavorite.nonNullObserve(viewLifecycleOwner) { isCheck ->
+            if (isCheck) save() else delete()
         }
+
     }
 
-    private fun setIsCheckIngredient(position: Int) {
-        viewModel.setIsCheckIngredient(position)
+    private fun save() {
+        vm.saveFavoriteMeal()
     }
 
-    private fun save(){
-        viewModel.saveFavoriteMeal(meal)
-    }
-
-    private fun delete(){
-        viewModel.deleteFavoriteMeal(meal)
+    private fun delete() {
+        vm.deleteFavoriteMeal()
     }
 
     override fun onDestroy() {

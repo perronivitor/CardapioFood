@@ -10,7 +10,7 @@ import com.gruppe.cardapiofood.data.room.FavoriteRepository
 
 class FavoriteMealsViewModel(private val repository: FavoriteRepository) : ViewModel() {
 
-    private var _mFavoriteMelsList = repository.favoriteList
+    private var _mFavoriteMelsList = repository.mFavoriteList
     val mFavoriteMealsList get() = _mFavoriteMelsList
 
     var mProgressBar = MutableLiveData<Boolean>(false)

@@ -10,6 +10,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Meal(
     val title: String,
-    val imgUrl: String,
-    var isFavorite : Boolean = false
+    val imgUrl: String
 ) : Parcelable

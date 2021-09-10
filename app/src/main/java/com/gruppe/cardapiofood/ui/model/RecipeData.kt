@@ -39,25 +39,25 @@ data class RecipeData(
     var strMeasure14: String,
     var strMeasure15: String,
 ) {
-    fun getIngredientsList(): List<Ingredient> {
-        val ingredients = mutableListOf<Ingredient>()
-        ingredients.add(Ingredient(false, "$strMeasure1 $strIngredient1"))
-        ingredients.add(Ingredient(false, "$strMeasure2 $strIngredient2"))
-        ingredients.add(Ingredient(false, "$strMeasure3 $strIngredient3"))
-        ingredients.add(Ingredient(false, "$strMeasure4 $strIngredient4"))
-        ingredients.add(Ingredient(false, "$strMeasure5 $strIngredient5"))
-        ingredients.add(Ingredient(false, "$strMeasure6 $strIngredient6"))
-        ingredients.add(Ingredient(false, "$strMeasure7 $strIngredient7"))
-        ingredients.add(Ingredient(false, "$strMeasure8 $strIngredient8"))
-        ingredients.add(Ingredient(false, "$strMeasure9 $strIngredient9"))
-        ingredients.add(Ingredient(false, "$strMeasure10 $strIngredient10"))
-        ingredients.add(Ingredient(false, "$strMeasure11 $strIngredient11"))
-        ingredients.add(Ingredient(false, "$strMeasure12 $strIngredient12"))
-        ingredients.add(Ingredient(false, "$strMeasure13 $strIngredient13"))
-        ingredients.add(Ingredient(false, "$strMeasure14 $strIngredient14"))
-        ingredients.add(Ingredient(false, "$strMeasure15 $strIngredient15"))
+    fun getIngredientsList(): List<String> {
+        val ingredients = mutableListOf<String>()
+        ingredients.add("$strMeasure1 $strIngredient1")
+        ingredients.add("$strMeasure2 $strIngredient2")
+        ingredients.add( "$strMeasure3 $strIngredient3")
+        ingredients.add("$strMeasure4 $strIngredient4")
+        ingredients.add("$strMeasure5 $strIngredient5")
+        ingredients.add("$strMeasure6 $strIngredient6")
+        ingredients.add("$strMeasure7 $strIngredient7")
+        ingredients.add("$strMeasure8 $strIngredient8")
+        ingredients.add("$strMeasure9 $strIngredient9")
+        ingredients.add("$strMeasure10 $strIngredient10")
+        ingredients.add("$strMeasure11 $strIngredient11")
+        ingredients.add("$strMeasure12 $strIngredient12")
+        ingredients.add("$strMeasure13 $strIngredient13")
+        ingredients.add("$strMeasure14 $strIngredient14")
+        ingredients.add("$strMeasure15 $strIngredient15")
         return ingredients.filterIndexed { _, i ->
-            !i.description.isNullOrBlank() && i.description.trim() != "null"
+            !i.isNullOrBlank() && i.trim() != "null"
         }
     }
 }

@@ -2,20 +2,20 @@ package com.gruppe.cardapiofood.ui.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.gruppe.cardapiofood.data.repository.RecipeRepository
 import com.gruppe.cardapiofood.data.room.FavoriteMealDataBase
 import com.gruppe.cardapiofood.data.room.FavoriteRepository
+import com.gruppe.cardapiofood.data.room.RecipeEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() {
 
-    private var _mMealIngredientList = MutableLiveData<Recipe>()
-    val mMealIngredientItemList get() = _mMealIngredientList
+    private var _mRecipe = MutableLiveData<RecipeEntity>()
+    val mRecipe get() = _mRecipe
 
     private var _isFavorite = MutableLiveData(false)
     val isFavorite get() = _isFavorite
@@ -27,41 +27,60 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
     fun getIngredients(meal: String) {
         launchDataLoad {
             RecipeRepository.getIngredients(meal,
-                { recipe -> _mMealIngredientList.postValue(recipe) },
+                { recipe -> _mRecipe.postValue(recipe) },
                 { throwable -> error.postValue(throwable.toString()) })
         }
     }
 
-    fun setFavorite(isChecked : Boolean){
+    fun updateReciper() {
+        _mRecipe.value?.let { recipe ->
+            recipe.isFavorite = _isFavorite.value!!
+            _mRecipe.postValue(recipe)
+        }
+
+    }
+
+    fun setFavorite(isChecked: Boolean) {
         _isFavorite.postValue(isChecked)
     }
 
-    fun setIsCheckIngredient(position: Int) {
-        try {
-            val recipe = mMealIngredientItemList.value
-            recipe!!.ingredients[position].isCheck = !recipe.ingredients[position].isCheck
-            _mMealIngredientList.postValue(recipe!!)
-        } catch (e: Exception) {
-            Log.e("RecipeViewModel", e.message.toString())
+    fun saveFavoriteMeal() {
+        if (_mRecipe.value != null) {
+            launchDataLoad {
+                Log.i("test", "saveFavoriteMeal:${_mRecipe.value!!} ")
+                repository.save(_mRecipe.value!!)
+            }
         }
     }
 
-    fun saveFavoriteMeal(meal : Meal){
-        launchDataLoad {
-            repository.save(meal)
+    fun deleteFavoriteMeal() {
+        if (_mRecipe.value != null) {
+            launchDataLoad {
+                repository.delete(_mRecipe.value!!)
+            }
         }
     }
 
-    fun deleteFavoriteMeal(meal: Meal){
-        launchDataLoad {
-            repository.delete(meal)
+    fun setRecipe(recipe: RecipeEntity) {
+        _mRecipe.postValue(recipe)
+    }
+
+    fun getRecipe(title: String, recipe: (recipe: RecipeEntity) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                Log.i("observerRecipe", "ViewModel Repositor")
+                recipe(repository.getRecipe(title))
+                Log.i("observerRecipe", "Retorno repository -> ${repository.getRecipe(title)}")
+            }catch (e : Exception){
+                Log.i("observerRecipe", "Exception -> ${e.message}")
+            }
         }
     }
 
-    fun verifyIfMealContainInFavoriteDb(title:String){
+    fun verifyIfMealContainInFavoriteDb(title: String, exist: (isExist: Boolean) -> Unit) {
         launchDataLoad {
-            val mealFavoriteId = repository.searchMealInFavoriteList(title)
-          _isFavorite.postValue(mealFavoriteId != null && mealFavoriteId >=1 )
+            val repo = repository.searchMealInFavoriteList(title)
+            exist(repo > 0)
         }
     }
 
@@ -86,7 +105,7 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {
-                return  return RecipeViewModel(
+                return return RecipeViewModel(
                     repository = FavoriteRepository(
                         favoriteDAO = FavoriteMealDataBase
                             .getInstance(application.applicationContext).favoriteDAO

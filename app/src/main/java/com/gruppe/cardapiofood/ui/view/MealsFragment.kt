@@ -86,9 +86,9 @@ class MealsFragment : Fragment() {
         }
     }
 
-    private fun navToIngredientsFragment(meal: Meal) {
+    private fun navToIngredientsFragment(mealTitle: String) {
         navController.navigateWithAnimations(
-            MealsFragmentDirections.actionMealsFragmentToIngredientFragment(meal)
+            MealsFragmentDirections.actionMealsFragmentToIngredientFragment(mealTitle)
         )
     }
 

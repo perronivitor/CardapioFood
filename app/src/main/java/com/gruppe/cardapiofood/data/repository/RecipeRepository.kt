@@ -1,9 +1,9 @@
 package com.gruppe.cardapiofood.data.repository
 
 import android.util.Log
+import com.gruppe.cardapiofood.data.room.RecipeEntity
 import com.gruppe.cardapiofood.retrofit.RetrofitClient
 import com.gruppe.cardapiofood.ui.model.RequestRecipe
-import com.gruppe.cardapiofood.ui.viewmodel.Recipe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -12,32 +12,37 @@ import retrofit2.Response
 
 object RecipeRepository {
 
-    suspend fun getIngredients(meal : String,
-                       success : (recipe : Recipe) -> Unit,
-                       failure : (t : Throwable) -> Unit) {
+    suspend fun getIngredients(
+        meal: String,
+        success: (recipe: RecipeEntity) -> Unit,
+        failure: (t: Throwable) -> Unit,
+    ) {
 
         withContext(Dispatchers.IO) {
 
             RetrofitClient.service.getIngredients(meal)?.enqueue(object : Callback<RequestRecipe> {
                 override fun onResponse(
                     call: Call<RequestRecipe>,
-                    res: Response<RequestRecipe>
+                    res: Response<RequestRecipe>,
                 ) {
                     try {
                         when {
                             res.isSuccessful -> {
                                 res.body()?.let { list ->
                                     Log.i("RecipeRepository", "Response->$list")
-                                    val recipe = Recipe().apply {
-                                        with(list.meals[0]) {
-                                            id = idMeal
-                                            title = strMeal
-                                            prepareMode = strInstructions
-                                            ingredients = getIngredientsList()
-                                        }
+                                    with(list.meals[0]) {
+                                        val recipe = RecipeEntity(
+                                            id = idMeal.toLong(),
+                                            title = strMeal,
+                                            imgUrl = img,
+                                            prepareMode = strInstructions,
+                                            ingredients = getIngredientsList(),
+                                            isFavorite = false
+                                        )
+                                        success(recipe)
                                     }
-                                    success(recipe)
                                 }
+
                             }
                             else -> {
                                 "${res.code()}, ${res.message()}".let {

@@ -73,9 +73,9 @@ class FavoriteMealsFragment : Fragment() {
         }
     }
 
-    private fun navToIngredientsFragment(meal: Meal) {
+    private fun navToIngredientsFragment(mealTitle : String) {
         navController.navigateWithAnimations(
-            FavoriteMealsFragmentDirections.actionFavoriteMealsFragmentToIngredientFragment(meal),
+            FavoriteMealsFragmentDirections.actionFavoriteMealsFragmentToIngredientFragment(mealTitle),
         )
     }
 

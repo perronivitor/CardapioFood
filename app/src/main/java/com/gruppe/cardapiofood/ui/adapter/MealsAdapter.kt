@@ -11,7 +11,7 @@ import com.gruppe.cardapiofood.ui.viewmodel.Meal
 
 
 class MealsAdapter(private var dataSet: List<Meal>? = null,
-                   private val onItemClick: (meal: Meal) -> Unit)
+                   private val onItemClick: (mealTitle: String) -> Unit)
     : RecyclerView.Adapter<MealsAdapter.ViewHolder>() {
 
     private lateinit var binding : ItemViewMealsBinding
@@ -35,7 +35,7 @@ class MealsAdapter(private var dataSet: List<Meal>? = null,
             holder.image.load(meal.imgUrl)
             holder.description.text = meal.title
             holder.itemView.setOnClickListener {
-                onItemClick(meal)
+                onItemClick(meal.title)
             }
         }
     }

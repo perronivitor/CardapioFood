@@ -1,24 +1,18 @@
 package com.gruppe.cardapiofood.ui.adapter
 
 import android.app.Activity
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.databinding.ItemViewRecipeBinding
 import com.gruppe.cardapiofood.ui.model.Ingredient
-import com.gruppe.cardapiofood.ui.viewmodel.Recipe
 
 class RecipeAdapter(
     private val context: Activity,
-    private val arrayList: List<Ingredient>,
-    private val onItemClick: (position: Int) -> Unit,
-) : ArrayAdapter<Ingredient>(context, R.layout.item_view_recipe, arrayList) {
+    private val arrayList: List<String>
+    ) : ArrayAdapter<String>(context, R.layout.item_view_recipe, arrayList) {
 
     private lateinit var binding: ItemViewRecipeBinding
 
@@ -31,12 +25,12 @@ class RecipeAdapter(
         val checkBox = binding.checkbox
         val tvIngredient = binding.tvIngredent
 
-        arrayList?.get(position)?.let { recipe ->
-            checkBox.isChecked = recipe.isCheck
-            tvIngredient.text = recipe.description
+        arrayList?.get(position)?.let { recipeTitle ->
+            checkBox.isChecked = false
+            tvIngredient.text = recipeTitle
 
             view.setOnClickListener {
-                onItemClick(position)
+                checkBox.isChecked = !checkBox.isChecked
             }
         }
 

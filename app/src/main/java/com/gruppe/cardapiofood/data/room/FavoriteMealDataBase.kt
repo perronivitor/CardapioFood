@@ -4,14 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.gruppe.cardapiofood.ui.viewmodel.Meal
+import androidx.room.TypeConverters
 
 
 @Database(
-    entities = [MealEntity::class],
-    version = 2,
+    entities = [RecipeEntity::class],
+    version = 1,
     exportSchema = false
 )
+@TypeConverters(IngredientsTypeConverter::class)
 abstract class FavoriteMealDataBase :RoomDatabase(){
     abstract val favoriteDAO: FavoriteDAO
 
