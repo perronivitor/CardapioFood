@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:focusable="true"
                     android:clickable="true"
-                    android:button="@xml/custon_favorite_checkbox"
+                    android:button="@xml/custom_favorite_checkbox"
                     android:layout_margin="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

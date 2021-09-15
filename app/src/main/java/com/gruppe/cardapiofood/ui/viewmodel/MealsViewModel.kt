@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gruppe.cardapiofood.ui.model.MealData
 import com.gruppe.cardapiofood.data.repository.MealsRepository
+import com.gruppe.cardapiofood.retrofit.Resultado
 import kotlinx.coroutines.launch
 
 class MealsViewModel : ViewModel() {
@@ -26,17 +27,20 @@ class MealsViewModel : ViewModel() {
 
     fun getMealsList(category: String) {
         launchDataLoad {
-            MealsRepository.getMeals(
-                category,
-                { meals ->
-                    _mMealsList.postValue(meals)
-                }, { throwable ->
-
-                })
+            when(val repo = MealsRepository.getMeals(category)){
+                is Resultado.Sucesso ->{
+                    repo.dado?.let { m->
+                        _mMealsList.postValue(m.meals)
+                    }
+                }
+                is Resultado.Erro ->{
+                    error.postValue(repo.exception.message)
+                }
+            }
         }
     }
 
-    fun launchDataLoad(block: suspend () -> Unit) {
+    private fun launchDataLoad(block: suspend () -> Unit) {
         viewModelScope.launch {
             try {
                 mProgressBar.postValue(true)

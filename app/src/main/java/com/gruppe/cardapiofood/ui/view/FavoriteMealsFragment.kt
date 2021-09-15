@@ -1,6 +1,5 @@
 package com.gruppe.cardapiofood.ui.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,7 +16,6 @@ import com.gruppe.cardapiofood.navigateWithAnimations
 import com.gruppe.cardapiofood.nonNullObserve
 import com.gruppe.cardapiofood.ui.adapter.FavoriteMealsAdapter
 import com.gruppe.cardapiofood.ui.viewmodel.FavoriteMealsViewModel
-import com.gruppe.cardapiofood.ui.viewmodel.Meal
 
 class FavoriteMealsFragment : Fragment() {
 
@@ -32,8 +30,7 @@ class FavoriteMealsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View {
         _binding = FavoriteMealsFragmentBinding.inflate(layoutInflater)
         return binding.root
     }

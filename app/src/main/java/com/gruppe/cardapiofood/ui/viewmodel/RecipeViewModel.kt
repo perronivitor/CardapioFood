@@ -63,7 +63,7 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
     fun saveFavoriteMeal() {
         launchDataLoad {
-            
+
             _mRecipe.value?.let { r ->
                 val repo = RecipeWithIngredients(recipe = RecipeEntity(
                     title = r.title,
