@@ -76,14 +76,17 @@ class RecipeFragment : Fragment() {
     private fun observer() {
         vm.mRecipe.nonNullObserve(viewLifecycleOwner, { recipe ->
             Log.i("observerRecipe", recipe.toString())
-            binding.listView.apply {
-                adapter = RecipeAdapter(requireActivity(), recipe.ingredients)
-            }
             binding.imgMeal.load(recipe.imgUrl)
             binding.tvPrepareMode.text = recipe.prepareMode
             binding.btFavorite.isChecked = recipe.isFavorite
             binding.tvMeal.text = recipe.title
         })
+
+        vm.mIngredient.nonNullObserve(viewLifecycleOwner){ingredients->
+            binding.listView.apply {
+                adapter = RecipeAdapter(requireActivity(), ingredients)
+            }
+        }
 
         vm.error.nonNullObserve(viewLifecycleOwner, {
             showDialogError(requireContext(), "Error", it.toString())

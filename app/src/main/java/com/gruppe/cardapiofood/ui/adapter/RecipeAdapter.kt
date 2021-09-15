@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.gruppe.cardapiofood.R
 import com.gruppe.cardapiofood.databinding.ItemViewRecipeBinding
-import com.gruppe.cardapiofood.ui.model.Ingredient
 
 class RecipeAdapter(
     private val context: Activity,

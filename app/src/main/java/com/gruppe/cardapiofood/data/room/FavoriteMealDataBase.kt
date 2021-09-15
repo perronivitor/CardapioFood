@@ -4,15 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-
 
 @Database(
-    entities = [RecipeEntity::class],
-    version = 1,
+    entities = [RecipeEntity::class,IngredientsEntity::class],
+    version = 3,
     exportSchema = false
 )
-@TypeConverters(IngredientsTypeConverter::class)
 abstract class FavoriteMealDataBase :RoomDatabase(){
     abstract val favoriteDAO: FavoriteDAO
 

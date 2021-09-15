@@ -4,9 +4,9 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.gruppe.cardapiofood.data.repository.RecipeRepository
-import com.gruppe.cardapiofood.data.room.FavoriteMealDataBase
-import com.gruppe.cardapiofood.data.room.FavoriteRepository
-import com.gruppe.cardapiofood.data.room.RecipeEntity
+import com.gruppe.cardapiofood.data.room.*
+import com.gruppe.cardapiofood.retrofit.Resultado
+import com.gruppe.cardapiofood.ui.model.Recipe
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,8 +14,15 @@ import java.lang.Exception
 
 class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() {
 
-    private var _mRecipe = MutableLiveData<RecipeEntity>()
+    private var _mRecipe = MutableLiveData<Recipe>()
     val mRecipe get() = _mRecipe
+
+    private var _mIngredients = MutableLiveData<List<IngredientsEntity>>()
+    val mIngredient = Transformations.map(_mIngredients) {
+        it.mapTo(arrayListOf()) { ing ->
+            ing.ingredientName
+        }
+    }
 
     private var _isFavorite = MutableLiveData(false)
     val isFavorite get() = _isFavorite
@@ -24,11 +31,20 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
     var mProgressBar = MutableLiveData<Boolean>(null)
 
+    //Room
     fun getIngredients(meal: String) {
         launchDataLoad {
-            RecipeRepository.getIngredients(meal,
-                { recipe -> _mRecipe.postValue(recipe) },
-                { throwable -> error.postValue(throwable.toString()) })
+            val repo = RecipeRepository.getIngredients(meal)
+            when (repo) {
+                is Resultado.Sucesso -> {
+                    repo.dado?.let {
+                        _mRecipe.postValue(it)
+                    }
+                }
+                is Resultado.Erro -> {
+                    //Tratrar Erros
+                }
+            }
         }
     }
 
@@ -42,14 +58,24 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
 
     fun setFavorite(isChecked: Boolean) {
         _isFavorite.postValue(isChecked)
+        updateReciper()
     }
 
     fun saveFavoriteMeal() {
-        if (_mRecipe.value != null) {
-            launchDataLoad {
-                Log.i("test", "saveFavoriteMeal:${_mRecipe.value!!} ")
-                repository.save(_mRecipe.value!!)
+        launchDataLoad {
+            
+            _mRecipe.value?.let { r ->
+                val repo = RecipeWithIngredients(recipe = RecipeEntity(
+                    title = r.title,
+                    imgUrl = r.imgUrl,
+                    prepareMode = r.prepareMode,
+                    isFavorite = _isFavorite.value!!
+                ),
+                ingredient = r.ingredients
+                    )
             }
+
+            repository.save()
         }
     }
 
@@ -61,17 +87,22 @@ class RecipeViewModel(private val repository: FavoriteRepository) : ViewModel() 
         }
     }
 
-    fun setRecipe(recipe: RecipeEntity) {
-        _mRecipe.postValue(recipe)
+    fun setRecipe(recipe: List<RecipeWithIngredients>) {
+        recipe[0]?.let { rec ->
+            _mRecipe.postValue(rec.recipe)
+            _mIngredients.postValue(rec.ingredient)
+        }
+
+
     }
 
-    fun getRecipe(title: String, recipe: (recipe: RecipeEntity) -> Unit) {
+    fun getRecipe(title: String, recipe: (recipe: List<RecipeWithIngredients>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 Log.i("observerRecipe", "ViewModel Repositor")
                 recipe(repository.getRecipe(title))
                 Log.i("observerRecipe", "Retorno repository -> ${repository.getRecipe(title)}")
-            }catch (e : Exception){
+            } catch (e: Exception) {
                 Log.i("observerRecipe", "Exception -> ${e.message}")
             }
         }
